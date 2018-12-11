@@ -7,6 +7,8 @@ import com.example.zhangtianzhu.wanandroidkotlin.utils.ConfigureUtils
 import com.example.zhangtianzhu.wanandroidkotlin.utils.Preference
 import me.yokeyword.fragmentation.SupportActivity
 import com.example.zhangtianzhu.wanandroidkotlin.R
+import com.example.zhangtianzhu.wanandroidkotlin.app.WanAndroidApplication
+import com.example.zhangtianzhu.wanandroidkotlin.utils.CommonUtil
 import com.example.zhangtianzhu.wanandroidkotlin.utils.StatusBarUtil
 
 abstract class BaseActivity : SupportActivity() {
@@ -52,4 +54,10 @@ abstract class BaseActivity : SupportActivity() {
     protected abstract fun getData()
 
     protected abstract fun onViewCreated(savedInstanceState: Bundle?)
+
+    override fun onDestroy() {
+        super.onDestroy()
+        CommonUtil.fixInputMethodManagerLeak(this)
+        WanAndroidApplication.getRefWatcher(this)?.watch(this)
+    }
 }

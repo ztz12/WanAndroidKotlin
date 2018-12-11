@@ -8,6 +8,7 @@ import com.example.zhangtianzhu.wanandroidkotlin.constant.Constants
 import com.example.zhangtianzhu.wanandroidkotlin.utils.DialogUtil
 import me.yokeyword.fragmentation.SupportFragment
 import com.example.zhangtianzhu.wanandroidkotlin.R
+import com.example.zhangtianzhu.wanandroidkotlin.app.WanAndroidApplication
 import com.example.zhangtianzhu.wanandroidkotlin.utils.Preference
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 
@@ -107,5 +108,10 @@ abstract class BaseFragment : SupportFragment(){
     protected abstract fun initData()
 
     protected abstract fun lazyLoad()
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _mActivity.let { WanAndroidApplication.getRefWatcher(it)?.watch(it) }
+    }
 
 }

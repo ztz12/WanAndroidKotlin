@@ -52,25 +52,25 @@ class AboutUsActivity : BaseSwipeBackActivity() {
                 val fraction = 1f * (scrollRange + verticalOffset) / scrollRange
                 val minFraction = 0.1
                 val maxFraction = 0.8
-                if (about_us_scrollView == null || about_us_fab == null || about_us_fly_view == null) {
+                if (about_us_content == null || about_us_fab == null || about_us_fly_view == null) {
                     return
                 }
                 if (fraction < minFraction && misAppbarExpand) {
                     misAppbarExpand = false
                     about_us_fab.animate().scaleX(0f).scaleY(0f)
                     about_us_fly_view.animate().scaleX(0f).scaleY(0f)
-                    val animator = ValueAnimator.ofInt(about_us_scrollView.paddingTop, 0)
+                    val animator = ValueAnimator.ofInt(about_us_content.paddingTop, 0)
                     animator.duration = 300
-                    animator.addUpdateListener { animation -> about_us_scrollView.setPadding(0, animation.animatedValue as Int, 0, 0) }
+                    animator.addUpdateListener { animation -> about_us_content.setPadding(0, animation.animatedValue as Int, 0, 0) }
                     animator.start()
                 }
                 if (fraction > maxFraction && !misAppbarExpand) {
                     misAppbarExpand = true
                     about_us_fab.animate().scaleX(1f).scaleY(1f)
                     about_us_fly_view.animate().scaleX(1f).scaleY(1f)
-                    val animator = ValueAnimator.ofInt(about_us_scrollView.paddingTop, DensityUtil.dp2px(25f))
+                    val animator = ValueAnimator.ofInt(about_us_content.paddingTop, DensityUtil.dp2px(25f))
                     animator.duration = 300
-                    animator.addUpdateListener { animation -> about_us_scrollView.setPadding(0, animation.animatedValue as Int, 0, 0) }
+                    animator.addUpdateListener { animation -> about_us_content.setPadding(0, animation.animatedValue as Int, 0, 0) }
                     animator.start()
                 }
             }

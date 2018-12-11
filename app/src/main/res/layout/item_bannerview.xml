@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/viewBackground"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <cn.bingoogolapple.bgabanner.BGABanner
+        android:id="@+id/banner"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_230"
+        android:scaleType="fitXY"
+        app:banner_indicatorGravity="bottom|right"
+        app:banner_placeholderDrawable="@drawable/placeholder_banner"
+        app:banner_tipTextColor="@color/white"
+        app:banner_tipTextSize="@dimen/dp_16"
+        app:banner_transitionEffect="alpha">
+
+    </cn.bingoogolapple.bgabanner.BGABanner>
+
+</LinearLayout>

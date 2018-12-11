@@ -1,0 +1,42 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/setting_normal">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:title="@string/setting_night"
+            android:key="setting_night"/>
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="setting_NoPhoto"
+            android:title="@string/setting_image"
+            android:summary="@string/setting_no_photo_mode_summary"/>
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="setting_show_top"
+            android:title="@string/setting_show_top"
+            android:summary="@string/setting_show_top_summary"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/setting_other">
+
+        <com.example.zhangtianzhu.wanandroidkotlin.widget.IconPreference
+            android:key="color"
+            android:title="@string/choose_theme_color"
+            android:summary="@string/choose_theme_color_summary"/>
+
+        <Preference
+            android:key="clearCache"
+            android:title="@string/setting_clear"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/about">
+
+        <Preference
+            android:key="version"
+            android:title="@string/version"/>
+
+    </PreferenceCategory>
+</PreferenceScreen>

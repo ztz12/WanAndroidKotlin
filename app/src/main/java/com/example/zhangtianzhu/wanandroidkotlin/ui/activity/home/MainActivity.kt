@@ -212,6 +212,11 @@ class MainActivity : BaseActivity(), MainContract.View {
             true
         }
 
+        navigation.menu.findItem(R.id.nav_item_about_us).setOnMenuItemClickListener {
+            startActivity<AboutUsActivity>()
+            true
+        }
+
         //退出登录
         navigation.menu.findItem(R.id.nav_item_logout).run {
             isVisible = isLogin

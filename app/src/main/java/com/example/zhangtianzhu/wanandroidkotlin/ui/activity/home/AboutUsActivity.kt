@@ -10,6 +10,8 @@ import android.text.method.LinkMovementMethod
 import android.view.View
 import com.example.zhangtianzhu.wanandroidkotlin.R
 import com.example.zhangtianzhu.wanandroidkotlin.base.BaseSwipeBackActivity
+import com.example.zhangtianzhu.wanandroidkotlin.contract.home.AboutUsContract
+import com.example.zhangtianzhu.wanandroidkotlin.presenter.home.AboutUsPresenter
 import com.example.zhangtianzhu.wanandroidkotlin.utils.StatusBarUtil
 import com.example.zhangtianzhu.wanandroidkotlin.widget.ElasticOutInterpolator
 import com.scwang.smartrefresh.layout.api.RefreshHeader
@@ -18,15 +20,18 @@ import com.scwang.smartrefresh.layout.util.DensityUtil
 import kotlinx.android.synthetic.main.activity_about_us.*
 import kotlinx.android.synthetic.main.content_about.*
 
-class AboutUsActivity : BaseSwipeBackActivity() {
+class AboutUsActivity : BaseSwipeBackActivity() ,AboutUsContract.View{
 
     private var mThemeListener: View.OnClickListener? = null
+
+    private val mPresenter:AboutUsPresenter by lazy { AboutUsPresenter() }
 
     override fun getLayoutId(): Int {
         return R.layout.activity_about_us
     }
 
     override fun initData() {
+        mPresenter.attachView(this)
         setSupportActionBar(about_us_toolbar)
         StatusBarUtil.immersive(this)
         StatusBarUtil.setPaddingSmart(this, about_us_toolbar)
@@ -75,6 +80,8 @@ class AboutUsActivity : BaseSwipeBackActivity() {
                 }
             }
         })
+
+        mPresenter.registerEvent()
     }
 
     override fun onViewCreated(savedInstanceState: Bundle?) {
@@ -120,6 +127,30 @@ class AboutUsActivity : BaseSwipeBackActivity() {
                 about_us_app_bar.translationY = offset.toFloat()
             }
         })
+    }
+
+    override fun updateColor() {
+        super.updateColor()
+        changeColor()
+    }
+
+    override fun changeColor() {
+        about_us_refresh_layout.setPrimaryColors(mThemeColor)
+        about_us_fab.run {
+            setBackgroundColor(mThemeColor)
+            backgroundTintList = ColorStateList.valueOf(mThemeColor)
+        }
+        about_us_toolbar_layout.setContentScrimColor(mThemeColor)
+    }
+
+    override fun showErrorMsg(msg: String?) {
+    }
+
+    override fun showLoading() {
+    }
+
+    override fun hideLoading() {
+
     }
 
     private fun updateTheme() {

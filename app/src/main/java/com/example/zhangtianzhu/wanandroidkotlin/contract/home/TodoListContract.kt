@@ -10,7 +10,7 @@ interface TodoListContract {
 
         fun showTodoEvent(todoEvent: TodoEvent)
 
-        fun showNoTodoList(todoResponseData: TodoResponseData)
+        fun showTodoList(todoResponseData: TodoResponseData,isRefresh:Boolean)
 
         fun showDeleteSuccess(isSuccess:Boolean)
 

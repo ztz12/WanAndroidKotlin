@@ -150,6 +150,7 @@
     <string name="edit">Edit</string>
     <string name="see">See</string>
     <string name="save_ing"> Save...</string>
+    <string name="update_success">Update Success</string>
 
 
 </resources>

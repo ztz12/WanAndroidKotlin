@@ -13,7 +13,6 @@ class TodoPageAdapter(val list: MutableList<TodoTypeBean>,fragmentManager: Fragm
     private val fragments = mutableListOf<Fragment>()
 
     init {
-        fragments.clear()
         list.forEach {
             fragments.add(TodoFragment.getInstance(it.type))
         }

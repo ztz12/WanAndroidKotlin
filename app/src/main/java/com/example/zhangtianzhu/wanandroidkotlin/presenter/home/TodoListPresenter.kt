@@ -11,6 +11,8 @@ import com.example.zhangtianzhu.wanandroidkotlin.utils.RxBus
 class TodoListPresenter:BasePresenter<TodoListContract.View>(),TodoListContract.Presenter {
     private val mModel : TodoListModel by lazy { TodoListModel() }
 
+    private var isRefresh:Boolean = true
+
     override fun registerEvent() {
         addSubscribe(RxBus.default.toFlowable(TodoEvent::class.java)
                 .subscribe { todoEvent -> mView?.showTodoEvent(todoEvent) })
@@ -48,7 +50,7 @@ class TodoListPresenter:BasePresenter<TodoListContract.View>(),TodoListContract.
                         if(results.errorCode!=0){
                             showErrorMsg(results.errorMsg)
                         }else{
-                            showNoTodoList(results.data)
+                            showTodoList(results.data,isRefresh)
                         }
                         hideLoading()
                     }
@@ -72,7 +74,7 @@ class TodoListPresenter:BasePresenter<TodoListContract.View>(),TodoListContract.
                         if(results.errorCode!=0){
                             showErrorMsg(results.errorMsg)
                         }else{
-                            showNoTodoList(results.data)
+                            showTodoList(results.data,isRefresh)
                         }
                         hideLoading()
                     }

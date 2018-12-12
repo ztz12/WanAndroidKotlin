@@ -129,11 +129,6 @@ class MainActivity : BaseActivity(), MainContract.View {
                 mContent.scaleX = endScale
                 mContent.scaleY = endScale
             }
-
-            override fun onDrawerOpened(drawerView: View) {
-                super.onDrawerOpened(drawerView)
-                navigation.menu.findItem(R.id.nav_item_home).isChecked = true
-            }
         }
         toggle.syncState()
         drawer_layout.addDrawerListener(toggle)
@@ -217,6 +212,11 @@ class MainActivity : BaseActivity(), MainContract.View {
             true
         }
 
+        navigation.menu.findItem(R.id.nav_item_todo).setOnMenuItemClickListener {
+            startActivity<TodoActivity>()
+            true
+        }
+
         //退出登录
         navigation.menu.findItem(R.id.nav_item_logout).run {
             isVisible = isLogin
@@ -248,6 +248,7 @@ class MainActivity : BaseActivity(), MainContract.View {
     private fun showCollectPage() {
         common_toolbar_title_tv.text = getString(R.string.collect)
         switchFragment(Constants.TYPE_COLLECT)
+        navigation.menu.findItem(R.id.nav_item_my_collect).isChecked = true
         drawer_layout.closeDrawers()
     }
 
@@ -256,6 +257,7 @@ class MainActivity : BaseActivity(), MainContract.View {
         common_toolbar_title_tv.text = getString(R.string.home_pager)
         switchFragment(Constants.TYPE_HOME)
         bottom_navigation_view.selectedItemId = R.id.tab_home_pager
+        navigation.menu.findItem(R.id.nav_item_home).isChecked = true
         drawer_layout.closeDrawers()
     }
 

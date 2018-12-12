@@ -13,6 +13,11 @@
             android:title="@string/my_collect"
             android:checkable="true" />
 
+        <item android:id="@+id/nav_item_todo"
+            android:icon="@drawable/ic_todo_default_24dp"
+            android:title="@string/nav_todo"
+            android:checkable="true"/>
+
         <item android:id="@+id/nav_item_setting"
             android:icon="@drawable/ic_setting"
             android:title="@string/setting"

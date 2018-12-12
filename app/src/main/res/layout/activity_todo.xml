@@ -16,7 +16,7 @@
             android:id="@+id/todo_toolbar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_54"
-            android:background="@drawable/blue_gradient_bg"
+            android:background="@color/colorPrimary"
             app:navigationIcon="@drawable/ic_arrow_back_white_24dp"
             app:layout_scrollFlags="scroll|enterAlways" />
 

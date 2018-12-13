@@ -136,12 +136,14 @@ class TodoFragment : BaseFragment(), TodoListContract.View {
         if (isSuccess) {
             DialogUtil.showSnackBar(_mActivity, getString(R.string.delete_success))
         }
+        changeData()
     }
 
     override fun showUpdateSuccess(isSuccess: Boolean) {
         if (isSuccess) {
             DialogUtil.showSnackBar(_mActivity, getString(R.string.completed))
         }
+        changeData()
     }
 
     override fun showErrorMsg(msg: String?) {

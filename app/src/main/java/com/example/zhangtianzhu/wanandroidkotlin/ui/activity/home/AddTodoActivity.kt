@@ -46,10 +46,16 @@ class AddTodoActivity : BaseSwipeBackActivity(), AddTodoContract.View {
 
     override fun getData() {
         addTodo_toolbar.run {
-            if (Constants.SEE_TODO_TYPE_KEY == mTypeKey) {
-                title = getString(R.string.see)
-            } else if (Constants.EDIT_TODO_TYPE_KEY == mTypeKey) {
-                title = getString(R.string.edit)
+            when (mTypeKey) {
+                Constants.ADD_TODO_TYPE_KEY -> {
+                    title = getString(R.string.add)
+                }
+                Constants.SEE_TODO_TYPE_KEY -> {
+                    title = getString(R.string.see)
+                }
+                Constants.EDIT_TODO_TYPE_KEY -> {
+                    title = getString(R.string.edit)
+                }
             }
             setSupportActionBar(addTodo_toolbar)
             supportActionBar?.setDisplayHomeAsUpEnabled(true)

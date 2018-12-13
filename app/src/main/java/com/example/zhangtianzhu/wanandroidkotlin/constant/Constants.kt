@@ -101,15 +101,9 @@ object Constants {
     const val TODO_ADD = "todo_add"
     const val TODO_DONE = "todo_done"
 
-    object Type {
-        const val COLLECT_TYPE_KEY = "collect_type"
-        const val ABOUT_US_TYPE_KEY = "about_us_type_key"
-        const val SETTING_TYPE_KEY = "setting_type_key"
-        const val SEARCH_TYPE_KEY = "search_type_key"
-        const val ADD_TODO_TYPE_KEY = "add_todo_type_key"
-        const val SEE_TODO_TYPE_KEY = "see_todo_type_key"
-        const val EDIT_TODO_TYPE_KEY = "edit_todo_type_key"
-    }
+    const val ADD_TODO_TYPE_KEY = "add_todo_type_key"
+    const val SEE_TODO_TYPE_KEY = "see_todo_type_key"
+    const val EDIT_TODO_TYPE_KEY = "edit_todo_type_key"
 
     fun encodeCookie(cookies: List<String>): String {
         val sb = StringBuilder()

@@ -15,6 +15,9 @@ interface TodoListContract {
         fun showDeleteSuccess(isSuccess:Boolean)
 
         fun showUpdateSuccess(isSuccess:Boolean)
+
+        fun todoRefreshData(mType:Int)
+
     }
 
     interface Presenter:IPresenter<View>{
@@ -30,5 +33,9 @@ interface TodoListContract {
         fun updateTodoList(id:Int,status:Int)
 
         fun deleteTodoList(id:Int)
+
+        fun refreshData(type: Int,isDone:Boolean)
+
+        fun loadMore(type: Int,isDone: Boolean)
     }
 }

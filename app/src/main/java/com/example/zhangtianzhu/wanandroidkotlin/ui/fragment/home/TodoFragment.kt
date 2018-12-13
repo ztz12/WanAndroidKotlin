@@ -3,14 +3,17 @@ package com.example.zhangtianzhu.wanandroidkotlin.ui.fragment.home
 import android.os.Bundle
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
+import com.chad.library.adapter.base.BaseQuickAdapter
 import com.example.zhangtianzhu.wanandroidkotlin.base.BaseFragment
 import com.example.zhangtianzhu.wanandroidkotlin.R
 import com.example.zhangtianzhu.wanandroidkotlin.adapter.home.TodoListAdapter
+import com.example.zhangtianzhu.wanandroidkotlin.app.WanAndroidApplication
 import com.example.zhangtianzhu.wanandroidkotlin.bean.home.TodoEvent
 import com.example.zhangtianzhu.wanandroidkotlin.constant.Constants
 import com.example.zhangtianzhu.wanandroidkotlin.constant.TodoBean
 import com.example.zhangtianzhu.wanandroidkotlin.constant.TodoResponseData
 import com.example.zhangtianzhu.wanandroidkotlin.contract.home.TodoListContract
+import com.example.zhangtianzhu.wanandroidkotlin.http.NetWorkUtils
 import com.example.zhangtianzhu.wanandroidkotlin.presenter.home.TodoListPresenter
 import com.example.zhangtianzhu.wanandroidkotlin.ui.activity.home.AddTodoActivity
 import com.example.zhangtianzhu.wanandroidkotlin.utils.DialogUtil
@@ -23,7 +26,7 @@ class TodoFragment : BaseFragment(),TodoListContract.View{
 
     private val mTodoBean = mutableListOf<TodoBean>()
 
-    private val mAdapter:TodoListAdapter by lazy { TodoListAdapter(_mActivity,mTodoBean) }
+    private lateinit var mAdapter:TodoListAdapter
 
     private val linearLayoutManager:LinearLayoutManager by lazy { LinearLayoutManager(_mActivity) }
 
@@ -55,8 +58,17 @@ class TodoFragment : BaseFragment(),TodoListContract.View{
         mAdapter.run {
             bindToRecyclerView(rl_todo)
             setEmptyView(R.layout.fragment_empty_layout)
+            onItemChildClickListener = this@TodoFragment.onItemChildClickListener
         }
         changeData()
+        mPresenter.registerEvent()
+        refreshTodoData()
+    }
+
+    override fun todoRefreshData(todoType:Int) {
+        if(mType == todoType){
+            changeData()
+        }
     }
 
     private fun changeData(){
@@ -70,6 +82,7 @@ class TodoFragment : BaseFragment(),TodoListContract.View{
     override fun initData() {
         mPresenter.attachView(this)
         mType = arguments?.getInt(Constants.TODO_TYPE)!!
+        mAdapter = TodoListAdapter(_mActivity,mTodoBean,mType)
     }
 
     override fun lazyLoad() {
@@ -80,6 +93,7 @@ class TodoFragment : BaseFragment(),TodoListContract.View{
             when(todoEvent.type){
                 Constants.TODO_ADD ->{
                     startActivity<AddTodoActivity>(
+                            Pair(Constants.TYPE_KEY,Constants.ADD_TODO_TYPE_KEY),
                             Pair(Constants.TODO_TYPE,mType)
                     )
                 }
@@ -136,6 +150,74 @@ class TodoFragment : BaseFragment(),TodoListContract.View{
     override fun hideLoading() {
         if(mDialog.isShowing){
             mDialog.dismiss()
+        }
+    }
+
+    private val onItemChildClickListener = BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
+        if (mTodoBean.size > 0) {
+            val data = mTodoBean[position]
+            when (view.id) {
+                R.id.btn_top -> {
+                    mTodoBean.remove(data)
+                    mAdapter.notifyItemInserted(0)
+                    mTodoBean.add(0, data)
+                    mAdapter.notifyItemRemoved(position + 1)
+                    if (linearLayoutManager.findFirstVisibleItemPosition() == 0) {
+                        rl_todo.smoothScrollToPosition(0)
+                    }
+                }
+                R.id.btn_delete -> {
+                    if(!NetWorkUtils.isNetWorkAvailable(WanAndroidApplication.context)){
+                        DialogUtil.showSnackBar(_mActivity,getString(R.string.http_error))
+                        return@OnItemChildClickListener
+                    }else {
+                        mPresenter.deleteTodoList(data.id)
+                        mAdapter.notifyItemRemoved(position)
+                    }
+                }
+                R.id.btn_done -> {
+                    if(!NetWorkUtils.isNetWorkAvailable(WanAndroidApplication.context)){
+                        DialogUtil.showSnackBar(_mActivity,getString(R.string.http_error))
+                        return@OnItemChildClickListener
+                    }else {
+                        if(isDone) {
+                            mPresenter.updateTodoList(data.id, 0)
+                        }else{
+                            mPresenter.updateTodoList(data.id,1)
+                        }
+                        mAdapter.notifyItemRemoved(position)
+                    }
+                }
+                R.id.item_todo_content -> {
+                    if(isDone){
+                        startActivity<AddTodoActivity>(
+                                Pair(Constants.TYPE_KEY,Constants.SEE_TODO_TYPE_KEY),
+                                Pair(Constants.TODO_TYPE,mType),
+                                Pair(Constants.TODO_BEAN,data)
+                        )
+                    }else{
+                        startActivity<AddTodoActivity>(
+                                Pair(Constants.TYPE_KEY,Constants.EDIT_TODO_TYPE_KEY),
+                                Pair(Constants.TODO_TYPE,mType),
+                                Pair(Constants.TODO_BEAN,data)
+                        )
+                    }
+                }
+
+            }
+        }
+    }
+
+    private fun refreshTodoData(){
+        todo_refresh.run {
+            setOnRefreshListener {
+                mPresenter.refreshData(mType,isDone)
+                finishRefresh(1000)
+            }
+            setOnLoadMoreListener {
+                mPresenter.loadMore(mType,isDone)
+                finishLoadMore(1000)
+            }
         }
     }
 

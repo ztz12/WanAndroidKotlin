@@ -16,7 +16,6 @@ import com.example.zhangtianzhu.wanandroidkotlin.presenter.home.TodoPresenter
 import com.example.zhangtianzhu.wanandroidkotlin.utils.ConfigureUtils
 import com.example.zhangtianzhu.wanandroidkotlin.utils.RxBus
 import com.example.zhangtianzhu.wanandroidkotlin.utils.StatusBarUtil
-import kotlinx.android.synthetic.main.activity_knowledge_list.*
 import kotlinx.android.synthetic.main.activity_todo.*
 import kotlinx.android.synthetic.main.activity_todo.view.*
 
@@ -36,7 +35,7 @@ class TodoActivity : BaseSwipeBackActivity(),TodoContract.View {
         mPresenter.attachView(this)
         todo_toolbar.run {
             title = getString(R.string.nav_todo)
-            setSupportActionBar(toolbar)
+            setSupportActionBar(todo_toolbar)
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
         }
         StatusBarUtil.setStatusColor(window, ContextCompat.getColor(this, R.color.main_status_bar_blue), 1.0f)

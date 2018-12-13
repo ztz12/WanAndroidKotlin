@@ -213,7 +213,11 @@ class MainActivity : BaseActivity(), MainContract.View {
         }
 
         navigation.menu.findItem(R.id.nav_item_todo).setOnMenuItemClickListener {
-            startActivity<TodoActivity>()
+            if(isLogin) {
+                startActivity<TodoActivity>()
+            }else{
+                DialogUtil.showSnackBar(this,getString(R.string.login_tint))
+            }
             true
         }
 

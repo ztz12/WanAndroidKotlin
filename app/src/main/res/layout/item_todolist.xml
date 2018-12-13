@@ -54,6 +54,17 @@
     </RelativeLayout>
 
     <Button
+        android:id="@+id/btn_top"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_top"
+        android:paddingLeft="@dimen/dp_6"
+        android:paddingRight="@dimen/dp_6"
+        android:textSize="@dimen/sp_12"
+        android:text="@string/mark_top"
+        android:textColor="@color/white"/>
+
+    <Button
         android:id="@+id/btn_done"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"

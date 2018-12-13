@@ -2,6 +2,7 @@ package com.example.zhangtianzhu.wanandroidkotlin.presenter.home
 
 import com.example.zhangtianzhu.wanandroidkotlin.base.BasePresenter
 import com.example.zhangtianzhu.wanandroidkotlin.bean.home.TodoEvent
+import com.example.zhangtianzhu.wanandroidkotlin.bean.home.TodoRefreshEvent
 import com.example.zhangtianzhu.wanandroidkotlin.contract.home.TodoListContract
 import com.example.zhangtianzhu.wanandroidkotlin.http.ErrorException
 import com.example.zhangtianzhu.wanandroidkotlin.http.RetryWithDelay
@@ -13,9 +14,15 @@ class TodoListPresenter:BasePresenter<TodoListContract.View>(),TodoListContract.
 
     private var isRefresh:Boolean = true
 
+    private var mCurrentPage = 1
+
     override fun registerEvent() {
         addSubscribe(RxBus.default.toFlowable(TodoEvent::class.java)
                 .subscribe { todoEvent -> mView?.showTodoEvent(todoEvent) })
+        addSubscribe(RxBus.default.toFlowable(TodoRefreshEvent::class.java)
+                .filter(TodoRefreshEvent::isRefresh)
+                .map(TodoRefreshEvent::mType)
+                .subscribe{todoType -> run { mView?.todoRefreshData(todoType) }})
     }
 
     override fun getTodoList(type: Int) {
@@ -134,5 +141,25 @@ class TodoListPresenter:BasePresenter<TodoListContract.View>(),TodoListContract.
                     }
                 })
         addDisposed(disposable)
+    }
+
+    override fun refreshData(type: Int,isDone:Boolean) {
+        mCurrentPage = 1
+        isRefresh = true
+        if(isDone){
+            getDoneTodoList(mCurrentPage,type)
+        }else{
+            getNoTodoList(mCurrentPage,type)
+        }
+    }
+
+    override fun loadMore(type: Int,isDone:Boolean) {
+        mCurrentPage++
+        isRefresh = false
+        if(isDone){
+            getDoneTodoList(mCurrentPage,type)
+        }else{
+            getNoTodoList(mCurrentPage,type)
+        }
     }
 }

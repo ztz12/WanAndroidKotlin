@@ -20,25 +20,26 @@ import com.example.zhangtianzhu.wanandroidkotlin.utils.DialogUtil
 import kotlinx.android.synthetic.main.fragment_todo.*
 import org.jetbrains.anko.support.v4.startActivity
 
-class TodoFragment : BaseFragment(),TodoListContract.View{
+class TodoFragment : BaseFragment(), TodoListContract.View {
 
-    private val mPresenter:TodoListPresenter by lazy { TodoListPresenter() }
+    private val mPresenter: TodoListPresenter by lazy { TodoListPresenter() }
 
     private val mTodoBean = mutableListOf<TodoBean>()
 
-    private lateinit var mAdapter:TodoListAdapter
+    private lateinit var mAdapter: TodoListAdapter
 
-    private val linearLayoutManager:LinearLayoutManager by lazy { LinearLayoutManager(_mActivity) }
+    private val linearLayoutManager: LinearLayoutManager by lazy { LinearLayoutManager(_mActivity) }
 
     //完成 true 待完成 false
     private var isDone = false
 
-    private var mType :Int = 0
+    private var mType: Int = 0
+
     companion object {
-        fun getInstance(type:Int):TodoFragment{
+        fun getInstance(type: Int): TodoFragment {
             val fragment = TodoFragment()
             val bundle = Bundle()
-            bundle.putInt(Constants.TODO_TYPE,type)
+            bundle.putInt(Constants.TODO_TYPE, type)
             fragment.arguments = bundle
             return fragment
         }
@@ -65,43 +66,43 @@ class TodoFragment : BaseFragment(),TodoListContract.View{
         refreshTodoData()
     }
 
-    override fun todoRefreshData(todoType:Int) {
-        if(mType == todoType){
+    override fun todoRefreshData(todoType: Int) {
+        if (mType == todoType) {
             changeData()
         }
     }
 
-    private fun changeData(){
-        if(isDone){
-            mPresenter.getDoneTodoList(1,mType)
-        }else{
-            mPresenter.getNoTodoList(1,mType)
+    private fun changeData() {
+        if (isDone) {
+            mPresenter.getDoneTodoList(1, mType)
+        } else {
+            mPresenter.getNoTodoList(1, mType)
         }
     }
 
     override fun initData() {
         mPresenter.attachView(this)
         mType = arguments?.getInt(Constants.TODO_TYPE)!!
-        mAdapter = TodoListAdapter(_mActivity,mTodoBean,mType)
+        mAdapter = TodoListAdapter(_mActivity, mTodoBean, mType)
     }
 
     override fun lazyLoad() {
     }
 
     override fun showTodoEvent(todoEvent: TodoEvent) {
-        if(mType==todoEvent.index){
-            when(todoEvent.type){
-                Constants.TODO_ADD ->{
+        if (mType == todoEvent.index) {
+            when (todoEvent.type) {
+                Constants.TODO_ADD -> {
                     startActivity<AddTodoActivity>(
-                            Pair(Constants.TYPE_KEY,Constants.ADD_TODO_TYPE_KEY),
-                            Pair(Constants.TODO_TYPE,mType)
+                            Pair(Constants.TYPE_KEY, Constants.ADD_TODO_TYPE_KEY),
+                            Pair(Constants.TODO_TYPE, mType)
                     )
                 }
-                Constants.TODO_DONE ->{
+                Constants.TODO_DONE -> {
                     isDone = true
                     changeData()
                 }
-                Constants.TODO_NO ->{
+                Constants.TODO_NO -> {
                     isDone = false
                     changeData()
                 }
@@ -112,15 +113,15 @@ class TodoFragment : BaseFragment(),TodoListContract.View{
     override fun showTodoList(todoResponseData: TodoResponseData, isRefresh: Boolean) {
         todoResponseData.datas.let {
             mAdapter.run {
-                if(isRefresh){
+                if (isRefresh) {
                     replaceData(it)
-                }else{
+                } else {
                     addData(it)
                 }
                 val size = it.size
-                if(size<todoResponseData.size){
+                if (size < todoResponseData.size) {
                     loadMoreEnd(isRefresh)
-                }else{
+                } else {
                     loadMoreComplete()
                 }
             }
@@ -128,19 +129,19 @@ class TodoFragment : BaseFragment(),TodoListContract.View{
     }
 
     override fun showDeleteSuccess(isSuccess: Boolean) {
-        if(isSuccess){
-            DialogUtil.showSnackBar(_mActivity,getString(R.string.delete_success))
+        if (isSuccess) {
+            DialogUtil.showSnackBar(_mActivity, getString(R.string.delete_success))
         }
     }
 
     override fun showUpdateSuccess(isSuccess: Boolean) {
-        if(isSuccess){
-            DialogUtil.showSnackBar(_mActivity,getString(R.string.completed))
+        if (isSuccess) {
+            DialogUtil.showSnackBar(_mActivity, getString(R.string.completed))
         }
     }
 
     override fun showErrorMsg(msg: String?) {
-        DialogUtil.showSnackBar(_mActivity,msg!!)
+        DialogUtil.showSnackBar(_mActivity, msg!!)
     }
 
     override fun showLoading() {
@@ -148,7 +149,7 @@ class TodoFragment : BaseFragment(),TodoListContract.View{
     }
 
     override fun hideLoading() {
-        if(mDialog.isShowing){
+        if (mDialog.isShowing) {
             mDialog.dismiss()
         }
     }
@@ -167,39 +168,39 @@ class TodoFragment : BaseFragment(),TodoListContract.View{
                     }
                 }
                 R.id.btn_delete -> {
-                    if(!NetWorkUtils.isNetWorkAvailable(WanAndroidApplication.context)){
-                        DialogUtil.showSnackBar(_mActivity,getString(R.string.http_error))
+                    if (!NetWorkUtils.isNetWorkAvailable(WanAndroidApplication.context)) {
+                        DialogUtil.showSnackBar(_mActivity, getString(R.string.http_error))
                         return@OnItemChildClickListener
-                    }else {
+                    } else {
                         mPresenter.deleteTodoList(data.id)
                         mAdapter.notifyItemRemoved(position)
                     }
                 }
                 R.id.btn_done -> {
-                    if(!NetWorkUtils.isNetWorkAvailable(WanAndroidApplication.context)){
-                        DialogUtil.showSnackBar(_mActivity,getString(R.string.http_error))
+                    if (!NetWorkUtils.isNetWorkAvailable(WanAndroidApplication.context)) {
+                        DialogUtil.showSnackBar(_mActivity, getString(R.string.http_error))
                         return@OnItemChildClickListener
-                    }else {
-                        if(isDone) {
+                    } else {
+                        if (isDone) {
                             mPresenter.updateTodoList(data.id, 0)
-                        }else{
-                            mPresenter.updateTodoList(data.id,1)
+                        } else {
+                            mPresenter.updateTodoList(data.id, 1)
                         }
                         mAdapter.notifyItemRemoved(position)
                     }
                 }
                 R.id.item_todo_content -> {
-                    if(isDone){
+                    if (isDone) {
                         startActivity<AddTodoActivity>(
-                                Pair(Constants.TYPE_KEY,Constants.SEE_TODO_TYPE_KEY),
-                                Pair(Constants.TODO_TYPE,mType),
-                                Pair(Constants.TODO_BEAN,data)
+                                Pair(Constants.TYPE_KEY, Constants.SEE_TODO_TYPE_KEY),
+                                Pair(Constants.TODO_TYPE, mType),
+                                Pair(Constants.TODO_BEAN, data)
                         )
-                    }else{
+                    } else {
                         startActivity<AddTodoActivity>(
-                                Pair(Constants.TYPE_KEY,Constants.EDIT_TODO_TYPE_KEY),
-                                Pair(Constants.TODO_TYPE,mType),
-                                Pair(Constants.TODO_BEAN,data)
+                                Pair(Constants.TYPE_KEY, Constants.EDIT_TODO_TYPE_KEY),
+                                Pair(Constants.TODO_TYPE, mType),
+                                Pair(Constants.TODO_BEAN, data)
                         )
                     }
                 }
@@ -208,14 +209,14 @@ class TodoFragment : BaseFragment(),TodoListContract.View{
         }
     }
 
-    private fun refreshTodoData(){
+    private fun refreshTodoData() {
         todo_refresh.run {
             setOnRefreshListener {
-                mPresenter.refreshData(mType,isDone)
+                mPresenter.refreshData(mType, isDone)
                 finishRefresh(1000)
             }
             setOnLoadMoreListener {
-                mPresenter.loadMore(mType,isDone)
+                mPresenter.loadMore(mType, isDone)
                 finishLoadMore(1000)
             }
         }

@@ -19,19 +19,19 @@ import kotlinx.android.synthetic.main.activity_add_todo.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class AddTodoActivity : BaseSwipeBackActivity(),AddTodoContract.View {
+class AddTodoActivity : BaseSwipeBackActivity(), AddTodoContract.View {
 
-    private val mPresenter:AddTodoPresenter by lazy { AddTodoPresenter() }
+    private val mPresenter: AddTodoPresenter by lazy { AddTodoPresenter() }
 
     private var mType = 0
 
     private var mTypeKey = ""
 
-    private var mTodoBean:TodoBean? = null
+    private var mTodoBean: TodoBean? = null
 
     private var mCurrentDate = formatCurrentDate()
 
-    private val mDialogAdd by lazy { DialogUtil.getWaitDialog(this,getString(R.string.save_ing)) }
+    private val mDialogAdd by lazy { DialogUtil.getWaitDialog(this, getString(R.string.save_ing)) }
     override fun getLayoutId(): Int {
         return R.layout.activity_add_todo
     }
@@ -46,9 +46,9 @@ class AddTodoActivity : BaseSwipeBackActivity(),AddTodoContract.View {
 
     override fun getData() {
         addTodo_toolbar.run {
-            if(Constants.SEE_TODO_TYPE_KEY == mTypeKey){
+            if (Constants.SEE_TODO_TYPE_KEY == mTypeKey) {
                 title = getString(R.string.see)
-            }else if(Constants.EDIT_TODO_TYPE_KEY == mTypeKey){
+            } else if (Constants.EDIT_TODO_TYPE_KEY == mTypeKey) {
                 title = getString(R.string.edit)
             }
             setSupportActionBar(addTodo_toolbar)
@@ -57,8 +57,8 @@ class AddTodoActivity : BaseSwipeBackActivity(),AddTodoContract.View {
         StatusBarUtil.setStatusColor(window, ContextCompat.getColor(this, R.color.main_status_bar_blue), 1.0f)
         addTodo_toolbar.setNavigationOnClickListener { onBackPressedSupport() }
 
-        when(mTypeKey){
-            Constants.SEE_TODO_TYPE_KEY ->{
+        when (mTypeKey) {
+            Constants.SEE_TODO_TYPE_KEY -> {
                 mTodoBean = intent.extras.getSerializable(Constants.TODO_BEAN) as TodoBean
                 et_title.setText(mTodoBean?.title)
                 et_content.setText(mTodoBean?.content)
@@ -68,7 +68,7 @@ class AddTodoActivity : BaseSwipeBackActivity(),AddTodoContract.View {
                 ll_date.isEnabled = false
                 btn_save.visibility = View.GONE
             }
-            Constants.EDIT_TODO_TYPE_KEY ->{
+            Constants.EDIT_TODO_TYPE_KEY -> {
                 mTodoBean = intent.extras.getSerializable(Constants.TODO_BEAN) as TodoBean
                 et_title.setText(mTodoBean?.title)
                 et_content.setText(mTodoBean?.content)
@@ -81,11 +81,11 @@ class AddTodoActivity : BaseSwipeBackActivity(),AddTodoContract.View {
     }
 
     private val onClickListener = View.OnClickListener {
-        when(it.id){
-            R.id.ll_date ->{
-                KeyBordUtil.openKeyBord(et_content,this)
+        when (it.id) {
+            R.id.ll_date -> {
+                KeyBordUtil.openKeyBord(et_content, this)
                 val now = Calendar.getInstance()
-                val date = DatePickerDialog(this,DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+                val date = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
                     val currentMonth = month + 1
                     mCurrentDate = "$year-$currentMonth-$dayOfMonth"
                     tv_date.text = mCurrentDate
@@ -96,12 +96,12 @@ class AddTodoActivity : BaseSwipeBackActivity(),AddTodoContract.View {
                 )
                 date.show()
             }
-            R.id.btn_save ->{
-                when(mTypeKey){
+            R.id.btn_save -> {
+                when (mTypeKey) {
                     Constants.ADD_TODO_TYPE_KEY ->
-                            mPresenter.add()
+                        mPresenter.add()
                     Constants.EDIT_TODO_TYPE_KEY ->
-                            mPresenter.update(mTodoBean?.id ?:0)
+                        mPresenter.update(mTodoBean?.id ?: 0)
                 }
             }
         }
@@ -111,18 +111,18 @@ class AddTodoActivity : BaseSwipeBackActivity(),AddTodoContract.View {
     }
 
     override fun showAddSuccess(isSuccess: Boolean) {
-        if(isSuccess){
-            DialogUtil.showSnackBar(this,getString(R.string.save_success))
+        if (isSuccess) {
+            DialogUtil.showSnackBar(this, getString(R.string.save_success))
         }
-        RxBus.default.post(TodoRefreshEvent(true,mType))
+        RxBus.default.post(TodoRefreshEvent(true, mType))
         finish()
     }
 
     override fun showUpdateSuccess(isSuccess: Boolean) {
-        if(isSuccess){
-            DialogUtil.showSnackBar(this,getString(R.string.update_success))
+        if (isSuccess) {
+            DialogUtil.showSnackBar(this, getString(R.string.update_success))
         }
-        RxBus.default.post(TodoRefreshEvent(true,mType))
+        RxBus.default.post(TodoRefreshEvent(true, mType))
         finish()
     }
 
@@ -130,14 +130,14 @@ class AddTodoActivity : BaseSwipeBackActivity(),AddTodoContract.View {
 
     override fun getContent(): String = et_content.text.toString()
 
-    override fun getCurrentDate(): String =formatCurrentDate()
+    override fun getCurrentDate(): String = formatCurrentDate()
 
     override fun getStatus(): Int = mTodoBean?.status ?: 0
 
     override fun getType(): Int = mType
 
     override fun showErrorMsg(msg: String?) {
-        DialogUtil.showSnackBar(this,msg!!)
+        DialogUtil.showSnackBar(this, msg!!)
     }
 
     override fun showLoading() {

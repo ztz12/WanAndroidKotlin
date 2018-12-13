@@ -17,8 +17,10 @@ class TodoListPresenter:BasePresenter<TodoListContract.View>(),TodoListContract.
     private var mCurrentPage = 1
 
     override fun registerEvent() {
+
         addSubscribe(RxBus.default.toFlowable(TodoEvent::class.java)
                 .subscribe { todoEvent -> mView?.showTodoEvent(todoEvent) })
+
         addSubscribe(RxBus.default.toFlowable(TodoRefreshEvent::class.java)
                 .filter(TodoRefreshEvent::isRefresh)
                 .map(TodoRefreshEvent::mType)

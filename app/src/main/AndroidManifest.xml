@@ -73,8 +73,12 @@
             android:name=".ui.activity.home.AboutUsActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.activity.home.TodoActivity" />
-        <activity android:name=".ui.activity.home.AddTodoActivity"></activity>
+        <activity android:name=".ui.activity.home.TodoActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.home.AddTodoActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

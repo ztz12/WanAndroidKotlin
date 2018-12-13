@@ -40,11 +40,10 @@ class TodoActivity : BaseSwipeBackActivity(), TodoContract.View {
         }
         StatusBarUtil.setStatusColor(window, ContextCompat.getColor(this, R.color.main_status_bar_blue), 1.0f)
         todo_toolbar.setNavigationOnClickListener { onBackPressedSupport() }
-
-        data = acquireData()
     }
 
     override fun getData() {
+        data = acquireData()
         mTodoPagerAdapter = TodoPageAdapter(data, supportFragmentManager)
         vp_todo.run {
             adapter = mTodoPagerAdapter
@@ -65,7 +64,7 @@ class TodoActivity : BaseSwipeBackActivity(), TodoContract.View {
     }
 
     private val onClickListener = View.OnClickListener {
-        var index = vp_todo.currentItem
+        val index = vp_todo.currentItem
         fab_menu.close(true)
         when (it.id) {
             R.id.fab_add -> {

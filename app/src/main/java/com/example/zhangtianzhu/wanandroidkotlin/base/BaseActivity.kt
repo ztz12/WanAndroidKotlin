@@ -3,13 +3,10 @@ package com.example.zhangtianzhu.wanandroidkotlin.base
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import com.example.zhangtianzhu.wanandroidkotlin.constant.Constants
-import com.example.zhangtianzhu.wanandroidkotlin.utils.ConfigureUtils
-import com.example.zhangtianzhu.wanandroidkotlin.utils.Preference
 import me.yokeyword.fragmentation.SupportActivity
 import com.example.zhangtianzhu.wanandroidkotlin.R
 import com.example.zhangtianzhu.wanandroidkotlin.app.WanAndroidApplication
-import com.example.zhangtianzhu.wanandroidkotlin.utils.CommonUtil
-import com.example.zhangtianzhu.wanandroidkotlin.utils.StatusBarUtil
+import com.example.zhangtianzhu.wanandroidkotlin.utils.*
 
 abstract class BaseActivity : SupportActivity() {
     protected var isLogin by Preference(Constants.ISLOGIN,false)

@@ -34,6 +34,8 @@ class SearchDataActivity : BaseSwipeBackActivity() , SearchListContract.View{
 
     private val linearLayoutManager :LinearLayoutManager by lazy { LinearLayoutManager(this) }
 
+    private val mDialog by lazy { DialogUtil.getWaitDialog(this,getString(R.string.loading)) }
+
     private var key : String = ""
 
     override fun getLayoutId(): Int {
@@ -156,9 +158,13 @@ class SearchDataActivity : BaseSwipeBackActivity() , SearchListContract.View{
     }
 
     override fun showLoading() {
+        mDialog.show()
     }
 
     override fun hideLoading() {
+        if(mDialog.isShowing){
+            mDialog.dismiss()
+        }
     }
 
     private fun refreshData(){

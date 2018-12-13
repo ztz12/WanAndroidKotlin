@@ -17,6 +17,7 @@ import com.example.zhangtianzhu.wanandroidkotlin.http.NetWorkUtils
 import com.example.zhangtianzhu.wanandroidkotlin.presenter.home.TodoListPresenter
 import com.example.zhangtianzhu.wanandroidkotlin.ui.activity.home.AddTodoActivity
 import com.example.zhangtianzhu.wanandroidkotlin.utils.DialogUtil
+import com.example.zhangtianzhu.wanandroidkotlin.widget.SpaceItemDecoration
 import kotlinx.android.synthetic.main.fragment_todo.*
 import org.jetbrains.anko.support.v4.startActivity
 
@@ -29,6 +30,8 @@ class TodoFragment : BaseFragment(), TodoListContract.View {
     private lateinit var mAdapter: TodoListAdapter
 
     private val linearLayoutManager: LinearLayoutManager by lazy { LinearLayoutManager(_mActivity) }
+
+    private val mRecyclerItemDecoration by lazy { SpaceItemDecoration(_mActivity) }
 
     //完成 true 待完成 false
     private var isDone = false
@@ -54,6 +57,7 @@ class TodoFragment : BaseFragment(), TodoListContract.View {
             layoutManager = linearLayoutManager
             adapter = mAdapter
             itemAnimator = DefaultItemAnimator()
+            mRecyclerItemDecoration.let { addItemDecoration(it) }
         }
 
         mAdapter.run {

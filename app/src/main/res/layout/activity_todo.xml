@@ -1,45 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/viewBackground"
-    tools:context=".ui.activity.home.TodoActivity">
+    android:background="@color/viewBackground">
+
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fitsSystemWindows="false"
+        android:theme="@style/AppTheme.AppBarOverlay"
         app:elevation="0dp">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/todo_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_54"
-            android:background="@color/colorPrimary"
-            app:navigationIcon="@drawable/ic_arrow_back_white_24dp"
+            android:layout_height="?attr/actionBarSize"
             app:layout_scrollFlags="scroll|enterAlways" />
 
         <android.support.design.widget.TabLayout
-            android:id="@+id/tab_todo"
+            android:id="@+id/todo_tabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
             android:theme="@style/AppTheme.AppBarOverlay"
-            app:tabGravity="center"
+            app:tabGravity="fill"
             app:tabIndicatorColor="@color/white"
             app:tabIndicatorHeight="@dimen/dp_2"
-            app:tabMode="scrollable"
+            app:tabMaxWidth="0dp"
+            app:tabMode="fixed"
             app:tabTextAppearance="@style/TabTextStyle" />
+
     </android.support.design.widget.AppBarLayout>
-    <com.mcxtzhang.swipemenulib.CstViewPager
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/todo_viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/vp_todo"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"></com.mcxtzhang.swipemenulib.CstViewPager>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <com.github.clans.fab.FloatingActionMenu
-        android:id="@+id/fab_menu"
+        android:id="@+id/todo_fab_menu"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
@@ -59,7 +61,7 @@
         app:menu_shadowColor="#444">
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/fab_add"
+            android:id="@+id/todo_fab_add"
             style="@style/MenuButtonsStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -67,7 +69,7 @@
             app:fab_label="@string/add" />
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/fab_todo"
+            android:id="@+id/todo_fab_todo"
             style="@style/MenuButtonsStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -75,7 +77,7 @@
             app:fab_label="@string/no_todo" />
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/fab_done"
+            android:id="@+id/todo_fab_done"
             style="@style/MenuButtonsStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -83,4 +85,5 @@
             app:fab_label="@string/completed" />
 
     </com.github.clans.fab.FloatingActionMenu>
+
 </android.support.design.widget.CoordinatorLayout>

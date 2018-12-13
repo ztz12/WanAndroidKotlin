@@ -7,12 +7,12 @@ import android.support.v4.view.PagerAdapter
 import com.example.zhangtianzhu.wanandroidkotlin.constant.TodoTypeBean
 import com.example.zhangtianzhu.wanandroidkotlin.ui.fragment.home.TodoFragment
 
-class TodoPageAdapter(val list: MutableList<TodoTypeBean>, fm: FragmentManager) : FragmentPagerAdapter(fm) {
+
+class TodoPagerAdapter(val list: List<TodoTypeBean>, fm: FragmentManager) : FragmentPagerAdapter(fm) {
 
     private val fragments = mutableListOf<TodoFragment>()
 
     init {
-        fragments.clear()
         list.forEach {
             fragments.add(TodoFragment.getInstance(it.type))
         }

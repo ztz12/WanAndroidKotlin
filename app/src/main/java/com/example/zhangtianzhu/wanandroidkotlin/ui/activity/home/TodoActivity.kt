@@ -6,7 +6,7 @@ import android.support.v4.content.ContextCompat
 import android.view.KeyEvent
 import android.view.View
 import com.example.zhangtianzhu.wanandroidkotlin.R
-import com.example.zhangtianzhu.wanandroidkotlin.adapter.home.TodoPageAdapter
+import com.example.zhangtianzhu.wanandroidkotlin.adapter.home.TodoPagerAdapter
 import com.example.zhangtianzhu.wanandroidkotlin.base.BaseSwipeBackActivity
 import com.example.zhangtianzhu.wanandroidkotlin.bean.home.TodoEvent
 import com.example.zhangtianzhu.wanandroidkotlin.constant.Constants
@@ -17,13 +17,15 @@ import com.example.zhangtianzhu.wanandroidkotlin.utils.ConfigureUtils
 import com.example.zhangtianzhu.wanandroidkotlin.utils.RxBus
 import com.example.zhangtianzhu.wanandroidkotlin.utils.StatusBarUtil
 import kotlinx.android.synthetic.main.activity_todo.*
-import kotlinx.android.synthetic.main.activity_todo.view.*
 
-class TodoActivity : BaseSwipeBackActivity(), TodoContract.View {
+
+class TodoActivity : BaseSwipeBackActivity(),TodoContract.View {
+    /**
+     * mPageAdapter
+     */
+    private lateinit var mPageAdapter: TodoPagerAdapter
 
     private lateinit var data: MutableList<TodoTypeBean>
-
-    private lateinit var mTodoPagerAdapter: TodoPageAdapter
 
     private val mPresenter: TodoPresenter by lazy { TodoPresenter() }
 
@@ -35,66 +37,66 @@ class TodoActivity : BaseSwipeBackActivity(), TodoContract.View {
         mPresenter.attachView(this)
         todo_toolbar.run {
             title = getString(R.string.nav_todo)
-            setSupportActionBar(todo_toolbar)
+            setSupportActionBar(this)
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
         }
         StatusBarUtil.setStatusColor(window, ContextCompat.getColor(this, R.color.main_status_bar_blue), 1.0f)
-        todo_toolbar.setNavigationOnClickListener { onBackPressedSupport() }
-    }
+        todo_toolbar.setNavigationOnClickListener { onBackPressedSupport() }    }
 
     override fun getData() {
         data = acquireData()
-        mTodoPagerAdapter = TodoPageAdapter(data, supportFragmentManager)
-        vp_todo.run {
-            adapter = mTodoPagerAdapter
-            addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tab_todo))
+        mPageAdapter = TodoPagerAdapter(data, supportFragmentManager)
+        todo_viewPager.run {
+            adapter = mPageAdapter
+            addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(todo_tabLayout))
             offscreenPageLimit = data.size
         }
-
-        tab_todo.run {
-            setupWithViewPager(vp_todo)
-            addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(vp_todo))
+        todo_tabLayout.run {
+            setupWithViewPager(todo_viewPager)
+            addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(todo_viewPager))
             addOnTabSelectedListener(onTabSelectedListener)
         }
 
-        fab_menu.setClosedOnTouchOutside(true)
-        fab_add.setOnClickListener(onClickListener)
-        fab_done.setOnClickListener(onClickListener)
-        fab_todo.setOnClickListener(onClickListener)
+        todo_fab_menu.setClosedOnTouchOutside(true)
+        todo_fab_add.setOnClickListener(onClickListener)
+        todo_fab_done.setOnClickListener(onClickListener)
+        todo_fab_todo.setOnClickListener(onClickListener)
     }
 
     private val onClickListener = View.OnClickListener {
-        val index = vp_todo.currentItem
-        fab_menu.close(true)
+        val index = todo_viewPager.currentItem
+        todo_fab_menu.close(true)
         when (it.id) {
-            R.id.fab_add -> {
+            R.id.todo_fab_add -> {
                 RxBus.default.post(TodoEvent(Constants.TODO_ADD, index))
             }
-            R.id.fab_done -> {
+            R.id.todo_fab_done -> {
                 RxBus.default.post(TodoEvent(Constants.TODO_DONE, index))
             }
-            R.id.fab_todo -> {
+            R.id.todo_fab_todo -> {
                 RxBus.default.post(TodoEvent(Constants.TODO_NO, index))
             }
         }
     }
-
-    private val onTabSelectedListener = object : TabLayout.OnTabSelectedListener {
-        override fun onTabReselected(p0: TabLayout.Tab?) {
-        }
-
-        override fun onTabSelected(p0: TabLayout.Tab?) {
-            p0?.let {
-                vp_todo.setCurrentItem(it.position, false)
-            }
-        }
-
-        override fun onTabUnselected(p0: TabLayout.Tab?) {
-
-        }
+    
+    override fun onViewCreated(savedInstanceState: Bundle?) {
     }
 
-    override fun onViewCreated(savedInstanceState: Bundle?) {
+    /**
+     * onTabSelectedListener
+     */
+    private val onTabSelectedListener = object : TabLayout.OnTabSelectedListener {
+        override fun onTabReselected(tab: TabLayout.Tab?) {
+        }
+
+        override fun onTabUnselected(tab: TabLayout.Tab?) {
+        }
+
+        override fun onTabSelected(tab: TabLayout.Tab?) {
+            tab?.let {
+                todo_viewPager.setCurrentItem(it.position, false)
+            }
+        }
     }
 
     private fun acquireData(): MutableList<TodoTypeBean> {
@@ -113,23 +115,23 @@ class TodoActivity : BaseSwipeBackActivity(), TodoContract.View {
 
     override fun changeColor() {
         if (!ConfigureUtils.getIsNightMode()) {
-            tab_todo.setBackgroundColor(mThemeColor)
+            todo_tabLayout.setBackgroundColor(mThemeColor)
 
-            fab_menu.menuButtonColorNormal = mThemeColor
-            fab_menu.menuButtonColorPressed = mThemeColor
-            fab_menu.menuButtonColorRipple = mThemeColor
+            todo_fab_menu.menuButtonColorNormal = mThemeColor
+            todo_fab_menu.menuButtonColorPressed = mThemeColor
+            todo_fab_menu.menuButtonColorRipple = mThemeColor
 
-            fab_add.colorNormal = mThemeColor
-            fab_add.colorPressed = mThemeColor
-            fab_add.colorRipple = mThemeColor
+            todo_fab_add.colorNormal = mThemeColor
+            todo_fab_add.colorPressed = mThemeColor
+            todo_fab_add.colorRipple = mThemeColor
 
-            fab_todo.colorNormal = mThemeColor
-            fab_todo.colorPressed = mThemeColor
-            fab_todo.colorRipple = mThemeColor
+            todo_fab_todo.colorNormal = mThemeColor
+            todo_fab_todo.colorPressed = mThemeColor
+            todo_fab_todo.colorRipple = mThemeColor
 
-            fab_done.colorNormal = mThemeColor
-            fab_done.colorPressed = mThemeColor
-            fab_done.colorRipple = mThemeColor
+            todo_fab_done.colorNormal = mThemeColor
+            todo_fab_done.colorPressed = mThemeColor
+            todo_fab_done.colorRipple = mThemeColor
         }
     }
 
@@ -152,5 +154,4 @@ class TodoActivity : BaseSwipeBackActivity(), TodoContract.View {
         }
         return super.onKeyDown(keyCode, event)
     }
-
 }

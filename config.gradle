@@ -68,6 +68,7 @@ ext {
             "banner"                : 'cn.bingoogolapple:bga-banner:2.2.4@aar',
             "circleImageview"       : "de.hdodenhof:circleimageview:2.2.0",
             "swipeDelMenuLayout"    : "com.github.mcxtzhang:SwipeDelMenuLayout:${dependVersion.swipeDelMenuLayout}",
+            "countDownView"         : "cn.yc:YCCountDownViewLib:1.0",
 
             "agentweb"              : 'com.just.agentweb:agentweb:4.0.2',
             "multidex"              : 'com.android.support:multidex:1.0.3',

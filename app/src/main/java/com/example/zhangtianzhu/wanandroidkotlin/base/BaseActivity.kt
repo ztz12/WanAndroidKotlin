@@ -11,6 +11,8 @@ import com.example.zhangtianzhu.wanandroidkotlin.utils.*
 abstract class BaseActivity : SupportActivity() {
     protected var isLogin by Preference(Constants.ISLOGIN,false)
 
+    protected var isFirstIn by Preference(Constants.ISFIRSTIN,true)
+
     protected val username by Preference(Constants.USERNAME, "")
 
     protected var mThemeColor = ConfigureUtils.getColor()

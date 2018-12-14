@@ -86,4 +86,5 @@
     <color name="Grey700">#616161</color>
     <color name="Grey800">#424242</color>
     <color name="Grey900">#212121</color>
+    <color name="alpha_10_black">#1A000000</color>
 </resources>

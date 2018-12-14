@@ -47,6 +47,7 @@ class LoginActivity : BaseActivity(),LoginContract.View {
     override fun showLoginData(loginData: LoginData) {
         user = loginData.username
         isLogin = true
+        isFirstIn = false
         startActivity(Intent(this@LoginActivity, MainActivity::class.java))
         RxBus.default.post(LoginEvent(true))
         finish()

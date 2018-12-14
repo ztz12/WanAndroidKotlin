@@ -12,6 +12,8 @@ object Constants {
 
     const val ISLOGIN = "isLogin"
 
+    const val ISFIRSTIN = "isFirstIn"
+
     const val SAVE_LOGIN_KEY = "user/login"
 
     const val SAVE_REGISTER_KEY = "user/register"

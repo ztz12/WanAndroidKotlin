@@ -6,6 +6,9 @@ import com.example.zhangtianzhu.wanandroidkotlin.utils.Preference
 import java.io.File
 
 object Constants {
+
+    const val BUGLY_ID = "963067f3a0"
+
     const val BASE_URl = "http://www.wanandroid.com/"
 
     const val USERNAME = "username"

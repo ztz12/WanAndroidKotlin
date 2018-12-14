@@ -194,9 +194,13 @@ class HomeFragment :BaseFragment(),HomeContract.View{
     }
 
     override fun showLoading() {
+        mDialog.show()
     }
 
     override fun hideLoading() {
+        if(mDialog.isShowing){
+            mDialog.dismiss()
+        }
     }
 
     override fun collectSuccess(success: Boolean) {

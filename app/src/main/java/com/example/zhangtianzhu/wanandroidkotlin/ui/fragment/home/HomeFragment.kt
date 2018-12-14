@@ -22,6 +22,7 @@ import com.example.zhangtianzhu.wanandroidkotlin.presenter.home.HomePresenter
 import com.example.zhangtianzhu.wanandroidkotlin.ui.activity.home.ContentActivity
 import com.example.zhangtianzhu.wanandroidkotlin.utils.DialogUtil
 import com.example.zhangtianzhu.wanandroidkotlin.utils.ImageLoader
+import com.example.zhangtianzhu.wanandroidkotlin.utils.Preference
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.fragment_home.*
 
@@ -31,6 +32,8 @@ class HomeFragment :BaseFragment(),HomeContract.View{
     private val mPresenter:HomePresenter by lazy { HomePresenter() }
 
     private lateinit var bannerData: List<BannerData>
+
+    private var isFirstDialog = true
 
     private var bannerView :View? = null
 
@@ -194,13 +197,16 @@ class HomeFragment :BaseFragment(),HomeContract.View{
     }
 
     override fun showLoading() {
-        mDialog.show()
+        if(isFirstDialog) {
+            mDialog.show()
+        }
     }
 
     override fun hideLoading() {
-        if(mDialog.isShowing){
+        if(isFirstDialog && mDialog.isShowing){
             mDialog.dismiss()
         }
+        isFirstDialog = false
     }
 
     override fun collectSuccess(success: Boolean) {

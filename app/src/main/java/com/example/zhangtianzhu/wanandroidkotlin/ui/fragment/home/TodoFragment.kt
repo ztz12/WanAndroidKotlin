@@ -97,7 +97,7 @@ class TodoFragment : BaseFragment(), TodoListContract.View {
     override fun lazyLoad() {
     }
 
-    //TODO 第二次次进入TODO 清单界面 点击任意三个按钮会崩溃 取消RxBus 换成EventBus
+    //TODO 第二次进入TODO 清单界面 点击任意三个按钮会崩溃 取消RxBus 换成EventBus
     override fun showTodoEvent(todoEvent: TodoEvent) {
 //        if (mType == todoEvent.index) {
 //            when (todoEvent.type) {

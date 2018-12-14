@@ -58,7 +58,7 @@ object RetrofitService {
             //设置错误重连
             retryOnConnectionFailure(true)
             //设置认证
-            cookieJar(CookiesManager())
+//            cookieJar(CookiesManager())
             //设置超时
             connectTimeout(10,TimeUnit.SECONDS)
             readTimeout(20,TimeUnit.SECONDS)

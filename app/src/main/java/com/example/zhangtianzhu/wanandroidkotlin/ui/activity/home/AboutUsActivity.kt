@@ -91,7 +91,7 @@ class AboutUsActivity : BaseSwipeBackActivity() ,AboutUsContract.View{
         aboutContent.text = Html.fromHtml(getString(R.string.about_content))
         aboutContent.movementMethod = LinkMovementMethod.getInstance()
         try {
-            val version = getString(R.string.app_name) + "V" + packageManager.getPackageInfo(packageName, 0).versionName
+            val version = getString(R.string.app_name) + "\nV" + packageManager.getPackageInfo(packageName, 0).versionName
             aboutVersion.text = version
         } catch (e: Exception) {
             e.printStackTrace()

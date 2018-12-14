@@ -58,6 +58,7 @@ object RetrofitService {
             //设置错误重连
             retryOnConnectionFailure(true)
             //设置认证
+            //TODO 注释掉此代码，避免第二次从引导页进入主界面存储登录cookie失效
 //            cookieJar(CookiesManager())
             //设置超时
             connectTimeout(10,TimeUnit.SECONDS)

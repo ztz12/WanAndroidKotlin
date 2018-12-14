@@ -19,6 +19,9 @@ import com.example.zhangtianzhu.wanandroidkotlin.ui.activity.home.AddTodoActivit
 import com.example.zhangtianzhu.wanandroidkotlin.utils.DialogUtil
 import com.example.zhangtianzhu.wanandroidkotlin.widget.SpaceItemDecoration
 import kotlinx.android.synthetic.main.fragment_todo.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import org.jetbrains.anko.support.v4.startActivity
 
 class TodoFragment : BaseFragment(), TodoListContract.View {
@@ -88,14 +91,38 @@ class TodoFragment : BaseFragment(), TodoListContract.View {
         mPresenter.attachView(this)
         mType = arguments?.getInt(Constants.TODO_TYPE)!!
         mAdapter = TodoListAdapter(_mActivity, mTodoBean, mType)
+        EventBus.getDefault().register(this)
     }
 
     override fun lazyLoad() {
     }
 
+    //TODO 第二次次进入TODO 清单界面 点击任意三个按钮会崩溃 取消RxBus 换成EventBus
     override fun showTodoEvent(todoEvent: TodoEvent) {
-        if (mType == todoEvent.index) {
-            when (todoEvent.type) {
+//        if (mType == todoEvent.index) {
+//            when (todoEvent.type) {
+//                Constants.TODO_ADD -> {
+//                    startActivity<AddTodoActivity>(
+//                            Pair(Constants.TYPE_KEY, Constants.ADD_TODO_TYPE_KEY),
+//                            Pair(Constants.TODO_TYPE, mType)
+//                    )
+//                }
+//                Constants.TODO_DONE -> {
+//                    isDone = true
+//                    changeData()
+//                }
+//                Constants.TODO_NO -> {
+//                    isDone = false
+//                    changeData()
+//                }
+//            }
+//        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun getTodoEvent(todoEvent: TodoEvent){
+        if(mType == todoEvent.index){
+            when(todoEvent.type){
                 Constants.TODO_ADD -> {
                     startActivity<AddTodoActivity>(
                             Pair(Constants.TYPE_KEY, Constants.ADD_TODO_TYPE_KEY),
@@ -228,4 +255,8 @@ class TodoFragment : BaseFragment(), TodoListContract.View {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        EventBus.getDefault().unregister(this)
+    }
 }

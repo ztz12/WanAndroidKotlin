@@ -21,14 +21,18 @@ class SpaceItemDecoration(context: Context) : RecyclerView.ItemDecoration() {
     private val mSectionOffsetV: Int = 0
     private val mSectionOffsetH: Int = 0
     private var mDrawOver = true
+    //加载系统自带的分割线（listView用的分割线）
     private var attrs: IntArray = intArrayOf(android.R.attr.listDivider)
 
     init {
-        var a = context.obtainStyledAttributes(attrs)
+        val a = context.obtainStyledAttributes(attrs)
         mDivider = a.getDrawable(0)
         a.recycle()
     }
 
+    /**
+     * 在onDraw方法之后回调，绘制蒙层
+     */
     override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         super.onDrawOver(c, parent, state)
         if (mDivider != null && mDrawOver) {
@@ -36,6 +40,9 @@ class SpaceItemDecoration(context: Context) : RecyclerView.ItemDecoration() {
         }
     }
 
+    /**
+     * 画线
+     */
     override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         super.onDraw(c, parent, state)
         if (mDivider != null && mDrawOver) {
@@ -43,6 +50,9 @@ class SpaceItemDecoration(context: Context) : RecyclerView.ItemDecoration() {
         }
     }
 
+    /**
+     * 设置条目周围偏移量
+     */
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
         super.getItemOffsets(outRect, view, parent, state)
 

@@ -17,12 +17,11 @@ import com.example.zhangtianzhu.wanandroidkotlin.utils.ConfigureUtils
 import com.example.zhangtianzhu.wanandroidkotlin.utils.RxBus
 import com.example.zhangtianzhu.wanandroidkotlin.utils.StatusBarUtil
 import kotlinx.android.synthetic.main.activity_todo.*
+import org.greenrobot.eventbus.EventBus
 
 
 class TodoActivity : BaseSwipeBackActivity(),TodoContract.View {
-    /**
-     * mPageAdapter
-     */
+
     private lateinit var mPageAdapter: TodoPagerAdapter
 
     private lateinit var data: MutableList<TodoTypeBean>
@@ -68,13 +67,18 @@ class TodoActivity : BaseSwipeBackActivity(),TodoContract.View {
         todo_fab_menu.close(true)
         when (it.id) {
             R.id.todo_fab_add -> {
-                RxBus.default.post(TodoEvent(Constants.TODO_ADD, index))
+                EventBus.getDefault().post(TodoEvent(Constants.TODO_ADD,index))
+//                RxBus.default.post(TodoEvent(Constants.TODO_ADD, index))
             }
             R.id.todo_fab_done -> {
-                RxBus.default.post(TodoEvent(Constants.TODO_DONE, index))
+                EventBus.getDefault().post(TodoEvent(Constants.TODO_DONE,index))
+
+//                RxBus.default.post(TodoEvent(Constants.TODO_DONE, index))
             }
             R.id.todo_fab_todo -> {
-                RxBus.default.post(TodoEvent(Constants.TODO_NO, index))
+                EventBus.getDefault().post(TodoEvent(Constants.TODO_NO,index))
+
+//                RxBus.default.post(TodoEvent(Constants.TODO_NO, index))
             }
         }
     }
@@ -82,9 +86,6 @@ class TodoActivity : BaseSwipeBackActivity(),TodoContract.View {
     override fun onViewCreated(savedInstanceState: Bundle?) {
     }
 
-    /**
-     * onTabSelectedListener
-     */
     private val onTabSelectedListener = object : TabLayout.OnTabSelectedListener {
         override fun onTabReselected(tab: TabLayout.Tab?) {
         }

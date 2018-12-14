@@ -22,7 +22,6 @@ class GuideActivity : BaseActivity() {
     private val SCALE_SIZE = 1.3f
 
     override fun getLayoutId(): Int {
-        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         return R.layout.activity_guide
     }
 

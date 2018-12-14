@@ -39,11 +39,13 @@
         <activity
             android:name=".ui.activity.login.LoginActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.FullScreen"/>
         <activity
             android:name=".ui.activity.login.RegisterActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.FullScreen"/>
         <activity
             android:name=".ui.activity.home.ContentActivity"
             android:launchMode="singleTask"
@@ -78,7 +80,8 @@
             android:screenOrientation="portrait" />
         <activity android:name=".ui.activity.guide.GuideActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/GuideTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -42,7 +42,7 @@
          app:elevation="@dimen/dp_16"
          app:itemIconTint="@drawable/nav_item_color_state"
          app:itemTextColor="@drawable/nav_item_color_state"
-         app:layout_behavior="@string/bye_burger_bottom_behavior"
+         app:layout_behavior="@string/bottom_show_behavior"
          android:id="@+id/bottom_navigation_view"></android.support.design.widget.BottomNavigationView>
  </android.support.design.widget.CoordinatorLayout>
   <android.support.design.widget.NavigationView

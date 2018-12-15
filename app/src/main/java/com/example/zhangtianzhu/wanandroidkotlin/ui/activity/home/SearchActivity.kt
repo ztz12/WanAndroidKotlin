@@ -28,12 +28,13 @@ import com.zhy.view.flowlayout.TagAdapter
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.toolbar.*
 import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.textColor
 
 class SearchActivity : BaseSwipeBackActivity(),SearchContract.View {
 
     private val mPresenter : SearchPresenter by lazy { SearchPresenter() }
 
-    private val mHotData = mutableListOf<HotSearchBean>()
+    private lateinit var mHotData : MutableList<HotSearchBean>
 
     private val mData = mutableListOf<SearchHistoryBean>()
 
@@ -98,6 +99,7 @@ class SearchActivity : BaseSwipeBackActivity(),SearchContract.View {
     }
 
     override fun showHotSearchData(hotSearchList: MutableList<HotSearchBean>) {
+        mHotData = mutableListOf()
         mHotData.addAll(hotSearchList)
         hot_search_flow.adapter = object : TagAdapter<HotSearchBean>(hotSearchList){
             override fun getView(parent: FlowLayout?, position: Int, t: HotSearchBean?): View {
@@ -106,7 +108,7 @@ class SearchActivity : BaseSwipeBackActivity(),SearchContract.View {
                 val padding :Int = DisplayManager.dip2px(10F)!!
                 tv.setPadding(padding,padding,padding,padding)
                 tv.text = t?.name
-                tv.setTextColor(CommonUtil.randomColor())
+                tv.textColor = CommonUtil.randomColor()
                 return tv
             }
         }

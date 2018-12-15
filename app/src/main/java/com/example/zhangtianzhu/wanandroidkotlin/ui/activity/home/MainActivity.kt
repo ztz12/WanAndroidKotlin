@@ -252,7 +252,7 @@ class MainActivity : BaseActivity(), MainContract.View {
     private fun showCollectPage() {
         common_toolbar_title_tv.text = getString(R.string.collect)
         switchFragment(Constants.TYPE_COLLECT)
-        navigation.menu.findItem(R.id.nav_item_my_collect).isChecked = true
+        navigation.menu.findItem(R.id.nav_item_my_collect).isCheckable = true
         drawer_layout.closeDrawers()
     }
 
@@ -261,7 +261,7 @@ class MainActivity : BaseActivity(), MainContract.View {
         common_toolbar_title_tv.text = getString(R.string.home_pager)
         switchFragment(Constants.TYPE_HOME)
         bottom_navigation_view.selectedItemId = R.id.tab_home_pager
-        navigation.menu.findItem(R.id.nav_item_home).isChecked = true
+        navigation.menu.findItem(R.id.nav_item_home).isCheckable = true
         drawer_layout.closeDrawers()
     }
 
@@ -379,9 +379,12 @@ class MainActivity : BaseActivity(), MainContract.View {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
+            R.id.action_usage ->{
+                startActivity<UseWebActivity>()
+            }
+
             R.id.action_search -> {
                 startActivity<SearchActivity>()
-                return true
             }
         }
         return super.onOptionsItemSelected(item)

@@ -101,6 +101,13 @@ interface Api {
                              @Field("originId") originId: Int = -1): Observable<HttpResult<Any>>
 
     /**
+     * 常用网站
+     * http://www.wanandroid.com/friend/json
+     */
+    @GET("friend/json")
+    fun getUseWebData(): Observable<HttpResult<MutableList<UseWebsiteBean>>>
+
+    /**
      * 热搜
      */
     @GET("hotkey/json")
@@ -221,5 +228,5 @@ interface Api {
      */
     @POST("/lg/todo/update/{id}/json")
     @FormUrlEncoded
-    fun updateTodo(@Path("id") id:Int, @FieldMap map: MutableMap<String, Any>): Observable<HttpResult<Any>>
+    fun updateTodo(@Path("id") id: Int, @FieldMap map: MutableMap<String, Any>): Observable<HttpResult<Any>>
 }

@@ -306,6 +306,7 @@ class MainActivity : BaseActivity(), MainContract.View {
     override fun showLoginView() {
         tvUser?.text = username
         navigation.menu.findItem(R.id.nav_item_logout).isVisible = true
+        drawer_layout.closeDrawers()
         homeFragment?.changeData()
     }
 

@@ -3,16 +3,15 @@ package com.example.zhangtianzhu.wanandroidkotlin.ui.activity.login
 import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.ActivityCompat
 import android.view.View
 import com.example.zhangtianzhu.wanandroidkotlin.R
-import com.example.zhangtianzhu.wanandroidkotlin.ui.activity.home.MainActivity
 import com.example.zhangtianzhu.wanandroidkotlin.base.BaseActivity
 import com.example.zhangtianzhu.wanandroidkotlin.bean.login.LoginEvent
 import com.example.zhangtianzhu.wanandroidkotlin.constant.Constants
 import com.example.zhangtianzhu.wanandroidkotlin.constant.LoginData
 import com.example.zhangtianzhu.wanandroidkotlin.contract.login.LoginContract
 import com.example.zhangtianzhu.wanandroidkotlin.presenter.login.LoginPresenter
+import com.example.zhangtianzhu.wanandroidkotlin.ui.activity.home.MainActivity
 import com.example.zhangtianzhu.wanandroidkotlin.utils.DialogUtil
 import com.example.zhangtianzhu.wanandroidkotlin.utils.Preference
 import com.example.zhangtianzhu.wanandroidkotlin.utils.RxBus
@@ -51,6 +50,7 @@ class LoginActivity : BaseActivity(),LoginContract.View {
         startActivity(Intent(this@LoginActivity, MainActivity::class.java))
         RxBus.default.post(LoginEvent(true))
         finish()
+        overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out)
     }
 
     override fun showErrorMsg(msg: String?) {

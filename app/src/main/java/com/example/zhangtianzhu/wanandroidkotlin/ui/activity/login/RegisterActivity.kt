@@ -70,8 +70,11 @@ class RegisterActivity : BaseActivity(),RegisterContract.View {
                         register()
                 R.id.register_toolbar->
                         finish()
-                R.id.tv_login ->
-                        finish()
+                R.id.tv_login -> {
+                    startActivity<LoginActivity>()
+                    finish()
+                    overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out)
+                }
             }
     }
 

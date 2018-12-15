@@ -1,6 +1,5 @@
 package com.example.zhangtianzhu.wanandroidkotlin.ui.fragment.wechat
 
-import android.content.res.ColorStateList
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import com.example.zhangtianzhu.wanandroidkotlin.R
@@ -21,7 +20,7 @@ class WeChatFragment : BaseFragment(),WeChatContract.View{
 
     private val mData = mutableListOf<WeChatData>()
 
-    private val mAdapter:WeChatAdapter by lazy { WeChatAdapter(mData,_mActivity.supportFragmentManager) }
+    private val mAdapter:WeChatAdapter by lazy { WeChatAdapter(mData,childFragmentManager) }
 
     companion object {
         fun getInstance(param1:String,param2:String): WeChatFragment {

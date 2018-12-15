@@ -20,7 +20,7 @@ class ProjectFragment :BaseFragment(),ProjectContract.View {
 
     private val mData = mutableListOf<ProjectTreeData>()
 
-    private val mAdapter : ProjectPageAdapter by lazy { ProjectPageAdapter(mData,_mActivity.supportFragmentManager) }
+    private val mAdapter : ProjectPageAdapter by lazy { ProjectPageAdapter(mData,childFragmentManager) }
 
     override fun getLayoutId(): Int {
         return R.layout.fragment_project

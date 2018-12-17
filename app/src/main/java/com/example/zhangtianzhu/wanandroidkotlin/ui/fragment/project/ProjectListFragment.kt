@@ -9,6 +9,7 @@ import com.example.zhangtianzhu.wanandroidkotlin.R
 import com.example.zhangtianzhu.wanandroidkotlin.adapter.project.ProjectListAdapter
 import com.example.zhangtianzhu.wanandroidkotlin.app.WanAndroidApplication
 import com.example.zhangtianzhu.wanandroidkotlin.base.BaseFragment
+import com.example.zhangtianzhu.wanandroidkotlin.base.BaseMvpFragment
 import com.example.zhangtianzhu.wanandroidkotlin.constant.ArticelDetail
 import com.example.zhangtianzhu.wanandroidkotlin.constant.ArticleData
 import com.example.zhangtianzhu.wanandroidkotlin.constant.Constants
@@ -20,11 +21,11 @@ import com.example.zhangtianzhu.wanandroidkotlin.utils.DialogUtil
 import kotlinx.android.synthetic.main.fragment_project_list.*
 
 
-class ProjectListFragment: BaseFragment(), ProjectListContract.View{
+class ProjectListFragment: BaseMvpFragment<ProjectListContract.View,ProjectListContract.Presenter>(), ProjectListContract.View{
+
+    override fun createPresenter(): ProjectListContract.Presenter = ProjectListPresenter()
 
     private var cid:Int = 0
-
-    private val mPresenter : ProjectListPresenter by lazy { ProjectListPresenter() }
 
     private val mData = mutableListOf<ArticelDetail>()
 
@@ -58,13 +59,12 @@ class ProjectListFragment: BaseFragment(), ProjectListContract.View{
             onItemClickListener = this@ProjectListFragment.onItemClickListener
             onItemChildClickListener = this@ProjectListFragment.onItemChildClickListener
         }
-        mPresenter.getProjectList(0,cid)
+        mPresenter?.getProjectList(0,cid)
 
         refreshData()
     }
 
     override fun initData() {
-        mPresenter.attachView(this)
         cid = arguments?.getInt(Constants.CONTENT_CID_KEY)!!
     }
 
@@ -94,9 +94,9 @@ class ProjectListFragment: BaseFragment(), ProjectListContract.View{
                         data.collect = !collect
                         mAdapter.setData(position,data)
                         if(collect){
-                            mPresenter.cancelCollectId(data.id)
+                            mPresenter?.cancelCollectId(data.id)
                         }else{
-                            mPresenter.addCollectId(data.id)
+                            mPresenter?.addCollectId(data.id)
                         }
                     }else{
                         DialogUtil.showSnackBar(_mActivity,getString(R.string.login_tint))
@@ -163,11 +163,11 @@ class ProjectListFragment: BaseFragment(), ProjectListContract.View{
     private fun refreshData(){
         project_refresh.setOnRefreshListener{
             setRefreshThemeColor(project_refresh)
-            mPresenter.refreshData(cid)
+            mPresenter?.refreshData(cid)
             project_refresh.finishRefresh(1000)
         }
         project_refresh.setOnLoadMoreListener {
-            mPresenter.loadMore(cid)
+            mPresenter?.loadMore(cid)
             project_refresh.finishLoadMore(1000)
         }
     }

@@ -8,6 +8,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.example.zhangtianzhu.wanandroidkotlin.R
 import com.example.zhangtianzhu.wanandroidkotlin.adapter.home.CollectAdapter
 import com.example.zhangtianzhu.wanandroidkotlin.base.BaseFragment
+import com.example.zhangtianzhu.wanandroidkotlin.base.BaseMvpFragment
 import com.example.zhangtianzhu.wanandroidkotlin.constant.CollectionArticle
 import com.example.zhangtianzhu.wanandroidkotlin.constant.CollectionResponseBody
 import com.example.zhangtianzhu.wanandroidkotlin.constant.Constants
@@ -18,9 +19,8 @@ import com.example.zhangtianzhu.wanandroidkotlin.utils.DialogUtil
 import kotlinx.android.synthetic.main.fragment_collect.*
 
 
-class CollectFragment : BaseFragment(), CollectContract.View {
-
-    private val mPresenter: CollectPresenter by lazy { CollectPresenter() }
+class CollectFragment : BaseMvpFragment<CollectContract.View,CollectContract.Presenter>(), CollectContract.View {
+    override fun createPresenter(): CollectContract.Presenter = CollectPresenter()
 
     private val mData = mutableListOf<CollectionArticle>()
 
@@ -49,8 +49,7 @@ class CollectFragment : BaseFragment(), CollectContract.View {
     }
 
     override fun initData() {
-        mPresenter.attachView(this)
-        mPresenter.getCollectList(0)
+        mPresenter?.getCollectList(0)
     }
 
     override fun scrollTop() {
@@ -110,7 +109,7 @@ class CollectFragment : BaseFragment(), CollectContract.View {
             when(view.id){
                 R.id.iv_collect ->{
                     mAdapter.remove(position)
-                    mPresenter.removeCollectArticles(data.id,data.originId)
+                    mPresenter?.removeCollectArticles(data.id,data.originId)
                 }
             }
         }
@@ -136,18 +135,18 @@ class CollectFragment : BaseFragment(), CollectContract.View {
     }
 
     fun requestData(){
-        mPresenter.getCollectList(0)
+        mPresenter?.getCollectList(0)
     }
 
     private fun refreshData() {
         collect_refresh.setOnRefreshListener {
             setRefreshThemeColor(collect_refresh)
-            mPresenter.autoRefresh()
+            mPresenter?.autoRefresh()
             collect_refresh.finishRefresh(1000)
         }
 
         collect_refresh.setOnLoadMoreListener {
-            mPresenter.loadMore()
+            mPresenter?.loadMore()
             collect_refresh.finishLoadMore(1000)
         }
     }

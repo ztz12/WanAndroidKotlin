@@ -16,6 +16,7 @@ import android.widget.TextView
 import com.example.zhangtianzhu.wanandroidkotlin.R
 import com.example.zhangtianzhu.wanandroidkotlin.base.BaseActivity
 import com.example.zhangtianzhu.wanandroidkotlin.base.BaseFragment
+import com.example.zhangtianzhu.wanandroidkotlin.base.BaseMvpActivity
 import com.example.zhangtianzhu.wanandroidkotlin.bean.login.LoginEvent
 import com.example.zhangtianzhu.wanandroidkotlin.constant.Constants
 import com.example.zhangtianzhu.wanandroidkotlin.contract.home.MainContract
@@ -37,7 +38,9 @@ import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.uiThread
 
-class MainActivity : BaseActivity(), MainContract.View {
+class MainActivity : BaseMvpActivity<MainContract.View,MainContract.Presenter>(), MainContract.View {
+
+    override fun createPresenter(): MainContract.Presenter = MainPresenter()
 
     private var fragmentList: MutableList<BaseFragment>? = null
 
@@ -47,8 +50,6 @@ class MainActivity : BaseActivity(), MainContract.View {
     private var navigationFragment: NavigationFragment? = null
     private var projectFragment: ProjectFragment? = null
     private var collectFragment: CollectFragment? = null
-
-    private val mPresenter: MainPresenter by lazy { MainPresenter() }
 
     private var mLastIndex: Int = 0
     private var mIndex: Int = 0
@@ -62,8 +63,7 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     override fun initData() {
-        mPresenter.attachView(this)
-        mPresenter.registerEvent()
+        mPresenter?.registerEvent()
         fragmentList = mutableListOf()
         setSupportActionBar(common_toolbar)
         val actionBar = supportActionBar!!
@@ -228,7 +228,7 @@ class MainActivity : BaseActivity(), MainContract.View {
                 DialogUtil.getConfirmDialog(this@MainActivity, getString(R.string.logout_tint)
                         , DialogInterface.OnClickListener { _, _ ->
                     mDialog.show()
-                    mPresenter.loginOut()
+                    mPresenter?.loginOut()
                 }).show()
                 true
             }

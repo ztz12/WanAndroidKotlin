@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
 import com.example.zhangtianzhu.wanandroidkotlin.R
+import com.example.zhangtianzhu.wanandroidkotlin.base.BaseMvpSwipeBackActivity
 import com.example.zhangtianzhu.wanandroidkotlin.base.BaseSwipeBackActivity
 import com.example.zhangtianzhu.wanandroidkotlin.constant.Constants
 import com.example.zhangtianzhu.wanandroidkotlin.constant.UseWebsiteBean
@@ -22,9 +23,8 @@ import kotlinx.android.synthetic.main.toolbar.*
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.textColor
 
-class UseWebActivity : BaseSwipeBackActivity(), UseWebContract.View {
-
-    private val mPresenter: UseWebPresenter by lazy { UseWebPresenter() }
+class UseWebActivity : BaseMvpSwipeBackActivity<UseWebContract.View,UseWebContract.Presenter>(), UseWebContract.View {
+    override fun createPresenter(): UseWebContract.Presenter = UseWebPresenter()
 
     private lateinit var mUseWeb: MutableList<UseWebsiteBean>
 
@@ -33,7 +33,6 @@ class UseWebActivity : BaseSwipeBackActivity(), UseWebContract.View {
     }
 
     override fun initData() {
-        mPresenter.attachView(this)
         toolbar.run {
             title = getString(R.string.useful_sites)
             setSupportActionBar(toolbar)
@@ -44,7 +43,7 @@ class UseWebActivity : BaseSwipeBackActivity(), UseWebContract.View {
     }
 
     override fun getData() {
-        mPresenter.getUseWebData()
+        mPresenter?.getUseWebData()
 
         use_tag_flow.setOnTagClickListener { view, position, parent ->
             if (mUseWeb.size > 0) {

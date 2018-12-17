@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.view.View
 import com.example.zhangtianzhu.wanandroidkotlin.R
+import com.example.zhangtianzhu.wanandroidkotlin.base.BaseMvpSwipeBackActivity
 import com.example.zhangtianzhu.wanandroidkotlin.base.BaseSwipeBackActivity
 import com.example.zhangtianzhu.wanandroidkotlin.bean.home.TodoRefreshEvent
 import com.example.zhangtianzhu.wanandroidkotlin.constant.Constants
@@ -19,9 +20,9 @@ import kotlinx.android.synthetic.main.activity_add_todo.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class AddTodoActivity : BaseSwipeBackActivity(), AddTodoContract.View {
+class AddTodoActivity : BaseMvpSwipeBackActivity<AddTodoContract.View,AddTodoContract.Presenter>(), AddTodoContract.View {
 
-    private val mPresenter: AddTodoPresenter by lazy { AddTodoPresenter() }
+    override fun createPresenter(): AddTodoContract.Presenter = AddTodoPresenter()
 
     private var mType = 0
 
@@ -37,7 +38,6 @@ class AddTodoActivity : BaseSwipeBackActivity(), AddTodoContract.View {
     }
 
     override fun initData() {
-        mPresenter.attachView(this)
         intent.extras.let {
             mType = it.getInt(Constants.TODO_TYPE)
             mTypeKey = it.getString(Constants.TYPE_KEY) ?: Constants.ADD_TODO_TYPE_KEY
@@ -105,9 +105,9 @@ class AddTodoActivity : BaseSwipeBackActivity(), AddTodoContract.View {
             R.id.btn_save -> {
                 when (mTypeKey) {
                     Constants.ADD_TODO_TYPE_KEY ->
-                        mPresenter.add()
+                        mPresenter?.add()
                     Constants.EDIT_TODO_TYPE_KEY ->
-                        mPresenter.update(mTodoBean?.id ?: 0)
+                        mPresenter?.update(mTodoBean?.id ?: 0)
                 }
             }
         }

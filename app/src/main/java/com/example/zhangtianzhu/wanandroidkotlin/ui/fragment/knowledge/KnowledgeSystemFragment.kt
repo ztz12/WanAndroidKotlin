@@ -7,6 +7,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.example.zhangtianzhu.wanandroidkotlin.base.BaseFragment
 import com.example.zhangtianzhu.wanandroidkotlin.R
 import com.example.zhangtianzhu.wanandroidkotlin.adapter.knowledge.KnowledgeSystemAdapter
+import com.example.zhangtianzhu.wanandroidkotlin.base.BaseMvpFragment
 import com.example.zhangtianzhu.wanandroidkotlin.constant.Constants
 import com.example.zhangtianzhu.wanandroidkotlin.constant.KnowledgeTreeData
 import com.example.zhangtianzhu.wanandroidkotlin.contract.knowledge.KnowledgeContract
@@ -17,9 +18,9 @@ import kotlinx.android.synthetic.main.fragment_knowledge.*
 import org.jetbrains.anko.support.v4.startActivity
 
 
-class KnowledgeSystemFragment :BaseFragment(),KnowledgeContract.View{
+class KnowledgeSystemFragment :BaseMvpFragment<KnowledgeContract.View,KnowledgeContract.Presenter>(),KnowledgeContract.View{
 
-    private val mPresenter:KnowledgePresenter by lazy { KnowledgePresenter() }
+    override fun createPresenter(): KnowledgeContract.Presenter = KnowledgePresenter()
 
     private val linearLayoutManager : LinearLayoutManager by lazy { LinearLayoutManager(_mActivity) }
 
@@ -44,13 +45,12 @@ class KnowledgeSystemFragment :BaseFragment(),KnowledgeContract.View{
             onItemClickListener = this@KnowledgeSystemFragment.onItemClickListener
         }
 
-        mPresenter.getKnowledgeTreeData()
+        mPresenter?.getKnowledgeTreeData()
 
         refreshData()
     }
 
     override fun initData() {
-        mPresenter.attachView(this)
     }
 
     companion object {
@@ -86,7 +86,7 @@ class KnowledgeSystemFragment :BaseFragment(),KnowledgeContract.View{
         knowledge_refresh.run {
             setOnRefreshListener {
                 setRefreshThemeColor(knowledge_refresh)
-                mPresenter.refreshKnowledgeSystem()
+                mPresenter?.refreshKnowledgeSystem()
                 finishRefresh(1000)
             }
         }

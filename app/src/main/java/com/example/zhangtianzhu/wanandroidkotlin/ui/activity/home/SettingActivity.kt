@@ -50,4 +50,8 @@ class SettingActivity : BaseSwipeBackActivity(),ColorChooserDialog.ColorCallback
     override fun onColorChooserDismissed(dialog: ColorChooserDialog) {
     }
 
+    override fun initView() {
+
+    }
+
 }

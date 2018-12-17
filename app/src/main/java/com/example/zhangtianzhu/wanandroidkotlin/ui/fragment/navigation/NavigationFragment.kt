@@ -8,6 +8,7 @@ import com.example.zhangtianzhu.wanandroidkotlin.R
 import com.example.zhangtianzhu.wanandroidkotlin.adapter.navigation.NavigationAdapter
 import com.example.zhangtianzhu.wanandroidkotlin.adapter.navigation.NavigationTabAdapter
 import com.example.zhangtianzhu.wanandroidkotlin.base.BaseFragment
+import com.example.zhangtianzhu.wanandroidkotlin.base.BaseMvpFragment
 import com.example.zhangtianzhu.wanandroidkotlin.constant.Constants
 import com.example.zhangtianzhu.wanandroidkotlin.constant.NavigationData
 import com.example.zhangtianzhu.wanandroidkotlin.contract.navigation.NavigationContract
@@ -18,9 +19,9 @@ import q.rorbin.verticaltablayout.VerticalTabLayout
 import q.rorbin.verticaltablayout.widget.TabView
 
 
-class NavigationFragment :BaseFragment(),NavigationContract.View{
+class NavigationFragment :BaseMvpFragment<NavigationContract.View,NavigationContract.Presenter>(),NavigationContract.View{
 
-    private val mPresenter : NavigationPresenter by lazy { NavigationPresenter() }
+    override fun createPresenter(): NavigationContract.Presenter = NavigationPresenter()
 
     private val mData = mutableListOf<NavigationData>()
 
@@ -46,12 +47,11 @@ class NavigationFragment :BaseFragment(),NavigationContract.View{
         mAdapter.run {
             bindToRecyclerView(rl_navigation)
         }
-        mPresenter.getNavigationData()
+        mPresenter?.getNavigationData()
         leftRightLink()
     }
 
     override fun initData() {
-        mPresenter.attachView(this)
     }
 
     /**

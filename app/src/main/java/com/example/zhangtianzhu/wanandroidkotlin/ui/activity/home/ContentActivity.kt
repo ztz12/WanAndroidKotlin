@@ -13,6 +13,7 @@ import android.webkit.WebViewClient
 import android.widget.LinearLayout
 import com.example.zhangtianzhu.wanandroidkotlin.R
 import com.example.zhangtianzhu.wanandroidkotlin.base.BaseActivity
+import com.example.zhangtianzhu.wanandroidkotlin.base.BaseMvpSwipeBackActivity
 import com.example.zhangtianzhu.wanandroidkotlin.base.BaseSwipeBackActivity
 import com.example.zhangtianzhu.wanandroidkotlin.constant.Constants
 import com.example.zhangtianzhu.wanandroidkotlin.contract.home.ContentContract
@@ -25,21 +26,20 @@ import kotlinx.android.synthetic.main.agent_container.*
 import kotlinx.android.synthetic.main.toolbar.*
 
 
-class ContentActivity : BaseSwipeBackActivity(),ContentContract.View {
+class ContentActivity : BaseMvpSwipeBackActivity<ContentContract.View,ContentContract.Presenter>(),ContentContract.View {
+
+    override fun createPresenter(): ContentContract.Presenter = ContentPresenter()
 
     private var agentWeb: AgentWeb? = null
     private lateinit var shareTitle: String
     private lateinit var shareUrl: String
     private var shareId: Int = 0
 
-    private val mPresenter :ContentPresenter by lazy { ContentPresenter() }
-
     override fun getLayoutId(): Int {
         return R.layout.activity_content
     }
 
     override fun initData() {
-        mPresenter.attachView(this)
         toolbar.run {
             title = getString(R.string.loading)
             setSupportActionBar(toolbar)
@@ -126,7 +126,7 @@ class ContentActivity : BaseSwipeBackActivity(),ContentContract.View {
             }
             R.id.action_collect ->
                 if(isLogin) {
-                    mPresenter.addCollectId(shareId)
+                    mPresenter?.addCollectId(shareId)
                 }else{
                     DialogUtil.showSnackBar(this,getString(R.string.login_tint))
                 }

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import com.example.zhangtianzhu.wanandroidkotlin.R
 import com.example.zhangtianzhu.wanandroidkotlin.base.BaseActivity
+import com.example.zhangtianzhu.wanandroidkotlin.base.BaseMvpActivity
 import com.example.zhangtianzhu.wanandroidkotlin.bean.login.LoginEvent
 import com.example.zhangtianzhu.wanandroidkotlin.constant.Constants
 import com.example.zhangtianzhu.wanandroidkotlin.constant.LoginData
@@ -17,9 +18,9 @@ import com.example.zhangtianzhu.wanandroidkotlin.utils.Preference
 import com.example.zhangtianzhu.wanandroidkotlin.utils.RxBus
 import kotlinx.android.synthetic.main.activity_login.*
 
-class LoginActivity : BaseActivity(),LoginContract.View {
+class LoginActivity : BaseMvpActivity<LoginContract.View,LoginContract.Presenter>(),LoginContract.View {
 
-    private val mPresenter :LoginPresenter by lazy { LoginPresenter() }
+    override fun createPresenter(): LoginContract.Presenter = LoginPresenter()
 
     private var user by Preference(Constants.USERNAME,"")
 
@@ -30,7 +31,6 @@ class LoginActivity : BaseActivity(),LoginContract.View {
     }
 
     override fun initData() {
-        mPresenter.attachView(this)
         login_account_edit.setText(user)
     }
 
@@ -88,7 +88,7 @@ class LoginActivity : BaseActivity(),LoginContract.View {
 
     private fun login(){
         if(validate()){
-            mPresenter.loginWanAndroid(login_account_edit.text.toString(),login_password_edit.text.toString())
+            mPresenter?.loginWanAndroid(login_account_edit.text.toString(),login_password_edit.text.toString())
         }
     }
 

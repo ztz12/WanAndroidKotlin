@@ -91,4 +91,8 @@ class GuideActivity : BaseActivity() {
         }
     }
 
+    override fun initView() {
+
+    }
+
 }

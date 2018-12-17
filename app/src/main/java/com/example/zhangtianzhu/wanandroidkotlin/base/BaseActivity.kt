@@ -24,6 +24,7 @@ abstract class BaseActivity : SupportActivity() {
     }
 
     private fun init(savedInstanceState: Bundle?){
+        initView()
         initData()
         getData()
         onViewCreated(savedInstanceState)
@@ -49,6 +50,8 @@ abstract class BaseActivity : SupportActivity() {
     protected abstract fun getLayoutId() :Int
 
     protected abstract fun initData()
+
+    protected abstract fun initView()
 
     protected abstract fun getData()
 

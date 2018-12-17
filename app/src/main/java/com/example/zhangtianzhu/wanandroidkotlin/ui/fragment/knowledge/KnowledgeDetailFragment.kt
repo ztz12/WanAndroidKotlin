@@ -9,6 +9,7 @@ import com.example.zhangtianzhu.wanandroidkotlin.R
 import com.example.zhangtianzhu.wanandroidkotlin.adapter.knowledge.KnowledgeDetailAdapter
 import com.example.zhangtianzhu.wanandroidkotlin.app.WanAndroidApplication
 import com.example.zhangtianzhu.wanandroidkotlin.base.BaseFragment
+import com.example.zhangtianzhu.wanandroidkotlin.base.BaseMvpFragment
 import com.example.zhangtianzhu.wanandroidkotlin.constant.ArticelDetail
 import com.example.zhangtianzhu.wanandroidkotlin.constant.ArticleData
 import com.example.zhangtianzhu.wanandroidkotlin.constant.Constants
@@ -20,9 +21,9 @@ import com.example.zhangtianzhu.wanandroidkotlin.utils.DialogUtil
 import kotlinx.android.synthetic.main.fragment_knowledge_detail.*
 
 
-class KnowledgeDetailFragment :BaseFragment(),KnowledgeDetailContract.View{
+class KnowledgeDetailFragment :BaseMvpFragment<KnowledgeDetailContract.View,KnowledgeDetailContract.Presenter>(),KnowledgeDetailContract.View{
 
-    private val mPresenter:KnowledgeDetailPresenter by lazy { KnowledgeDetailPresenter() }
+    override fun createPresenter(): KnowledgeDetailContract.Presenter = KnowledgeDetailPresenter()
 
     private var articleDetailData = mutableListOf<ArticelDetail>()
 
@@ -59,11 +60,10 @@ class KnowledgeDetailFragment :BaseFragment(),KnowledgeDetailContract.View{
             onItemChildClickListener = this@KnowledgeDetailFragment.onItemChildClickListener
         }
         refreshData()
-        mPresenter.getKnowledgeDetailData(0,cid)
+        mPresenter?.getKnowledgeDetailData(0,cid)
     }
 
     override fun initData() {
-        mPresenter.attachView(this)
         cid = arguments?.getInt(Constants.CONTENT_CID_KEY) ?:0
     }
 
@@ -136,9 +136,9 @@ class KnowledgeDetailFragment :BaseFragment(),KnowledgeDetailContract.View{
                         data.collect = !collect
                         mAdapter.setData(position,data)
                         if(collect){
-                            mPresenter.cancelCollectId(data.id)
+                            mPresenter?.cancelCollectId(data.id)
                         }else{
-                            mPresenter.addCollectId(data.id)
+                            mPresenter?.addCollectId(data.id)
                         }
                     }else{
                         DialogUtil.showSnackBar(_mActivity,getString(R.string.login_tint))
@@ -165,13 +165,13 @@ class KnowledgeDetailFragment :BaseFragment(),KnowledgeDetailContract.View{
         knowledge_refresh_detail.run {
             setOnRefreshListener {
                 setRefreshThemeColor(knowledge_refresh_detail)
-                mPresenter.refreshData(cid)
+                mPresenter?.refreshData(cid)
                 finishRefresh(1000)
             }
         }
         knowledge_refresh_detail.run {
             setOnLoadMoreListener {
-                mPresenter.loadMore(cid)
+                mPresenter?.loadMore(cid)
                 finishLoadMore(1000)
             }
         }

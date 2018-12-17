@@ -73,6 +73,7 @@ abstract class BaseFragment : SupportFragment(){
     }
 
     private fun init(){
+        initView()
         initData()
         getData()
     }
@@ -102,6 +103,8 @@ abstract class BaseFragment : SupportFragment(){
     }
 
     protected abstract fun getLayoutId() :Int
+
+    protected abstract fun initView()
 
     protected abstract fun getData()
 

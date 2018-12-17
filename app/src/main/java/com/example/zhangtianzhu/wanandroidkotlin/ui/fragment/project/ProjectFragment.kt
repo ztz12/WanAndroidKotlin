@@ -5,6 +5,7 @@ import android.support.design.widget.TabLayout
 import com.example.zhangtianzhu.wanandroidkotlin.R
 import com.example.zhangtianzhu.wanandroidkotlin.adapter.project.ProjectPageAdapter
 import com.example.zhangtianzhu.wanandroidkotlin.base.BaseFragment
+import com.example.zhangtianzhu.wanandroidkotlin.base.BaseMvpFragment
 import com.example.zhangtianzhu.wanandroidkotlin.constant.Constants
 import com.example.zhangtianzhu.wanandroidkotlin.constant.ProjectTreeData
 import com.example.zhangtianzhu.wanandroidkotlin.contract.project.ProjectContract
@@ -14,9 +15,9 @@ import com.example.zhangtianzhu.wanandroidkotlin.utils.DialogUtil
 import kotlinx.android.synthetic.main.fragment_project.*
 
 
-class ProjectFragment :BaseFragment(),ProjectContract.View {
+class ProjectFragment :BaseMvpFragment<ProjectContract.View,ProjectContract.Presenter>(),ProjectContract.View {
 
-    private val mPresenter : ProjectPresenter by lazy { ProjectPresenter() }
+    override fun createPresenter(): ProjectContract.Presenter = ProjectPresenter()
 
     private val mData = mutableListOf<ProjectTreeData>()
 
@@ -36,12 +37,11 @@ class ProjectFragment :BaseFragment(),ProjectContract.View {
             addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(vp_project))
             addOnTabSelectedListener(onTabSelectedListener)
         }
-        mPresenter.getProjectData()
-        mPresenter.registerEvent()
+        mPresenter?.getProjectData()
+        mPresenter?.registerEvent()
     }
 
     override fun initData() {
-        mPresenter.attachView(this)
     }
 
     companion object {
@@ -80,7 +80,7 @@ class ProjectFragment :BaseFragment(),ProjectContract.View {
     }
 
     fun changeProjectData(){
-        mPresenter.getProjectData()
+        mPresenter?.getProjectData()
     }
 
     override fun showProjectData(projectTreeData: MutableList<ProjectTreeData>) {

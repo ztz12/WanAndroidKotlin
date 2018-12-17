@@ -12,6 +12,7 @@ import com.example.zhangtianzhu.wanandroidkotlin.R
 import com.example.zhangtianzhu.wanandroidkotlin.adapter.home.HomeAdapter
 import com.example.zhangtianzhu.wanandroidkotlin.app.WanAndroidApplication
 import com.example.zhangtianzhu.wanandroidkotlin.base.BaseFragment
+import com.example.zhangtianzhu.wanandroidkotlin.base.BaseMvpFragment
 import com.example.zhangtianzhu.wanandroidkotlin.constant.ArticelDetail
 import com.example.zhangtianzhu.wanandroidkotlin.constant.ArticleData
 import com.example.zhangtianzhu.wanandroidkotlin.constant.BannerData
@@ -27,9 +28,9 @@ import io.reactivex.Observable
 import kotlinx.android.synthetic.main.fragment_home.*
 
 
-class HomeFragment :BaseFragment(),HomeContract.View{
+class HomeFragment :BaseMvpFragment<HomeContract.View,HomeContract.Presenter>(),HomeContract.View{
 
-    private val mPresenter:HomePresenter by lazy { HomePresenter() }
+    override fun createPresenter(): HomeContract.Presenter = HomePresenter()
 
     private lateinit var bannerData: List<BannerData>
 
@@ -64,8 +65,7 @@ class HomeFragment :BaseFragment(),HomeContract.View{
     }
 
     override fun initData() {
-        mPresenter.attachView(this)
-        mPresenter.getHomeData()
+        mPresenter?.getHomeData()
         bannerView = layoutInflater.inflate(R.layout.item_bannerview,null)
         bannerView?.findViewById<BGABanner>(R.id.banner)?.run {
             setDelegate(delegate)
@@ -73,7 +73,7 @@ class HomeFragment :BaseFragment(),HomeContract.View{
     }
 
     fun changeData(){
-        mPresenter.getHomeData()
+        mPresenter?.getHomeData()
     }
 
     override fun lazyLoad() {
@@ -149,9 +149,9 @@ class HomeFragment :BaseFragment(),HomeContract.View{
                             data.collect = !collect
                             mAdapter.setData(position,data)
                             if(collect){
-                                mPresenter.cancelCollectId(data.id)
+                                mPresenter?.cancelCollectId(data.id)
                             }else{
-                                mPresenter.addCollectId(data.id)
+                                mPresenter?.addCollectId(data.id)
                             }
                         }else{
                             DialogUtil.showSnackBar(_mActivity,getString(R.string.login_tint))
@@ -220,11 +220,11 @@ class HomeFragment :BaseFragment(),HomeContract.View{
     private fun refreshData(){
         home_refresh.setOnRefreshListener{
             setRefreshThemeColor(home_refresh)
-            mPresenter.autoRefresh()
+            mPresenter?.autoRefresh()
             home_refresh.finishRefresh(1000)
         }
         home_refresh.setOnLoadMoreListener {
-            mPresenter.loadMore()
+            mPresenter?.loadMore()
             home_refresh.finishLoadMore(1000)
         }
     }

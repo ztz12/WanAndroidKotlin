@@ -5,6 +5,7 @@ import android.support.design.widget.TabLayout
 import com.example.zhangtianzhu.wanandroidkotlin.R
 import com.example.zhangtianzhu.wanandroidkotlin.adapter.wechat.WeChatAdapter
 import com.example.zhangtianzhu.wanandroidkotlin.base.BaseFragment
+import com.example.zhangtianzhu.wanandroidkotlin.base.BaseMvpFragment
 import com.example.zhangtianzhu.wanandroidkotlin.constant.Constants
 import com.example.zhangtianzhu.wanandroidkotlin.constant.WeChatData
 import com.example.zhangtianzhu.wanandroidkotlin.contract.wechat.WeChatContract
@@ -14,9 +15,9 @@ import com.example.zhangtianzhu.wanandroidkotlin.utils.ConfigureUtils
 import com.example.zhangtianzhu.wanandroidkotlin.utils.DialogUtil
 import kotlinx.android.synthetic.main.fragment_wechat.*
 
-class WeChatFragment : BaseFragment(),WeChatContract.View{
+class WeChatFragment : BaseMvpFragment<WeChatContract.View,WeChatContract.Presenter>(),WeChatContract.View{
 
-    private val mPresenter :WeChatPresenter by lazy { WeChatPresenter() }
+    override fun createPresenter(): WeChatContract.Presenter = WeChatPresenter()
 
     private val mData = mutableListOf<WeChatData>()
 
@@ -48,8 +49,8 @@ class WeChatFragment : BaseFragment(),WeChatContract.View{
             addOnTabSelectedListener(onTabSelectedListener)
         }
 
-        mPresenter.getWeChatData()
-        mPresenter.registerEvent()
+        mPresenter?.getWeChatData()
+        mPresenter?.registerEvent()
     }
 
     private val onTabSelectedListener = object :TabLayout.OnTabSelectedListener{
@@ -67,7 +68,6 @@ class WeChatFragment : BaseFragment(),WeChatContract.View{
     }
 
     override fun initData() {
-        mPresenter.attachView(this)
     }
 
     override fun lazyLoad() {

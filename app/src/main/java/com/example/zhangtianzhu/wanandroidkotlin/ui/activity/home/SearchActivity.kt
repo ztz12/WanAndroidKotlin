@@ -13,6 +13,7 @@ import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.example.zhangtianzhu.wanandroidkotlin.R
 import com.example.zhangtianzhu.wanandroidkotlin.adapter.home.SearchAdapter
+import com.example.zhangtianzhu.wanandroidkotlin.base.BaseMvpSwipeBackActivity
 import com.example.zhangtianzhu.wanandroidkotlin.base.BaseSwipeBackActivity
 import com.example.zhangtianzhu.wanandroidkotlin.constant.Constants
 import com.example.zhangtianzhu.wanandroidkotlin.constant.HotSearchBean
@@ -30,9 +31,10 @@ import kotlinx.android.synthetic.main.toolbar.*
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.textColor
 
-class SearchActivity : BaseSwipeBackActivity(),SearchContract.View {
+class SearchActivity : BaseMvpSwipeBackActivity<SearchContract.View,SearchContract.Presenter>(),SearchContract.View {
 
-    private val mPresenter : SearchPresenter by lazy { SearchPresenter() }
+
+    override fun createPresenter(): SearchContract.Presenter = SearchPresenter()
 
     private lateinit var mHotData : MutableList<HotSearchBean>
 
@@ -47,7 +49,6 @@ class SearchActivity : BaseSwipeBackActivity(),SearchContract.View {
     }
 
     override fun initData() {
-        mPresenter.attachView(this)
         toolbar.run {
             title = getString(R.string.action_search)
             setSupportActionBar(toolbar)
@@ -85,14 +86,14 @@ class SearchActivity : BaseSwipeBackActivity(),SearchContract.View {
         search_history_clear_all_tv.setOnClickListener {
             mData.clear()
             mAdapter.replaceData(mData)
-            mPresenter.clearAllHistoryData()
+            mPresenter?.clearAllHistoryData()
         }
-        mPresenter.getHotSearchData()
+        mPresenter?.getHotSearchData()
     }
 
     override fun onResume() {
         super.onResume()
-        mPresenter.queryHistory()
+        mPresenter?.queryHistory()
     }
 
     override fun onViewCreated(savedInstanceState: Bundle?) {
@@ -159,7 +160,7 @@ class SearchActivity : BaseSwipeBackActivity(),SearchContract.View {
     }
 
     private fun getSearchKey(key:String){
-        mPresenter.saveSearchKey(key)
+        mPresenter?.saveSearchKey(key)
         startActivity<SearchDataActivity>(
                 Pair(Constants.SEARCH_KEY,key)
         )
@@ -177,7 +178,7 @@ class SearchActivity : BaseSwipeBackActivity(),SearchContract.View {
             val data = mData[position]
             when(view.id){
                 R.id.iv_clear ->{
-                    mPresenter.deleteId(data.id)
+                    mPresenter?.deleteId(data.id)
                     mAdapter.remove(position)
                 }
             }

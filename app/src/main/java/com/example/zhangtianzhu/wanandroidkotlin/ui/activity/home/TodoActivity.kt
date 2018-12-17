@@ -7,6 +7,7 @@ import android.view.KeyEvent
 import android.view.View
 import com.example.zhangtianzhu.wanandroidkotlin.R
 import com.example.zhangtianzhu.wanandroidkotlin.adapter.home.TodoPagerAdapter
+import com.example.zhangtianzhu.wanandroidkotlin.base.BaseMvpSwipeBackActivity
 import com.example.zhangtianzhu.wanandroidkotlin.base.BaseSwipeBackActivity
 import com.example.zhangtianzhu.wanandroidkotlin.bean.home.TodoEvent
 import com.example.zhangtianzhu.wanandroidkotlin.constant.Constants
@@ -20,20 +21,18 @@ import kotlinx.android.synthetic.main.activity_todo.*
 import org.greenrobot.eventbus.EventBus
 
 
-class TodoActivity : BaseSwipeBackActivity(),TodoContract.View {
+class TodoActivity : BaseMvpSwipeBackActivity<TodoContract.View,TodoContract.Presenter>(),TodoContract.View {
+    override fun createPresenter(): TodoContract.Presenter = TodoPresenter()
 
     private lateinit var mPageAdapter: TodoPagerAdapter
 
     private lateinit var data: MutableList<TodoTypeBean>
-
-    private val mPresenter: TodoPresenter by lazy { TodoPresenter() }
 
     override fun getLayoutId(): Int {
         return R.layout.activity_todo
     }
 
     override fun initData() {
-        mPresenter.attachView(this)
         todo_toolbar.run {
             title = getString(R.string.nav_todo)
             setSupportActionBar(this)

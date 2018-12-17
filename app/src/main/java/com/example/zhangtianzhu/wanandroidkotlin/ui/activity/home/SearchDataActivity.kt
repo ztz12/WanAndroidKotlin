@@ -12,6 +12,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.example.zhangtianzhu.wanandroidkotlin.R
 import com.example.zhangtianzhu.wanandroidkotlin.adapter.home.HomeAdapter
 import com.example.zhangtianzhu.wanandroidkotlin.app.WanAndroidApplication
+import com.example.zhangtianzhu.wanandroidkotlin.base.BaseMvpSwipeBackActivity
 import com.example.zhangtianzhu.wanandroidkotlin.base.BaseSwipeBackActivity
 import com.example.zhangtianzhu.wanandroidkotlin.constant.ArticelDetail
 import com.example.zhangtianzhu.wanandroidkotlin.constant.ArticleData
@@ -24,9 +25,9 @@ import com.example.zhangtianzhu.wanandroidkotlin.utils.StatusBarUtil
 import kotlinx.android.synthetic.main.activity_search_data.*
 import kotlinx.android.synthetic.main.toolbar.*
 
-class SearchDataActivity : BaseSwipeBackActivity() , SearchListContract.View{
+class SearchDataActivity : BaseMvpSwipeBackActivity<SearchListContract.View,SearchListContract.Presenter>() , SearchListContract.View{
 
-    private val mPresenter : SearchListPresenter by lazy { SearchListPresenter() }
+    override fun createPresenter(): SearchListContract.Presenter = SearchListPresenter()
 
     private val mSearchList = mutableListOf<ArticelDetail>()
 
@@ -43,7 +44,6 @@ class SearchDataActivity : BaseSwipeBackActivity() , SearchListContract.View{
     }
 
     override fun initData() {
-        mPresenter.attachView(this)
         val bundle = intent.extras
         key = bundle.getString(Constants.SEARCH_KEY)
         toolbar.run {
@@ -69,7 +69,7 @@ class SearchDataActivity : BaseSwipeBackActivity() , SearchListContract.View{
             onItemChildClickListener = this@SearchDataActivity.onItemChildClickListener
         }
 
-        mPresenter.querySearchListData(0,key)
+        mPresenter?.querySearchListData(0,key)
 
         refreshData()
 
@@ -131,9 +131,9 @@ class SearchDataActivity : BaseSwipeBackActivity() , SearchListContract.View{
                         data.collect = !collect
                         mAdapter.setData(position,data)
                         if(collect){
-                            mPresenter.cancelCollectId(data.id)
+                            mPresenter?.cancelCollectId(data.id)
                         }else{
-                            mPresenter.addCollectId(data.id)
+                            mPresenter?.addCollectId(data.id)
                         }
                     }else{
                         DialogUtil.showSnackBar(this,getString(R.string.login_tint))
@@ -170,12 +170,12 @@ class SearchDataActivity : BaseSwipeBackActivity() , SearchListContract.View{
     private fun refreshData(){
         search_refresh.run {
             setOnRefreshListener {
-                mPresenter.refreshData(key)
+                mPresenter?.refreshData(key)
                 finishRefresh(1000)
             }
 
             setOnLoadMoreListener {
-                mPresenter.loadMore(key)
+                mPresenter?.loadMore(key)
                 finishLoadMore(1000)
             }
         }

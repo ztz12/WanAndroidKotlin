@@ -8,6 +8,7 @@ import com.example.zhangtianzhu.wanandroidkotlin.base.BaseFragment
 import com.example.zhangtianzhu.wanandroidkotlin.R
 import com.example.zhangtianzhu.wanandroidkotlin.adapter.home.TodoListAdapter
 import com.example.zhangtianzhu.wanandroidkotlin.app.WanAndroidApplication
+import com.example.zhangtianzhu.wanandroidkotlin.base.BaseMvpFragment
 import com.example.zhangtianzhu.wanandroidkotlin.bean.home.TodoEvent
 import com.example.zhangtianzhu.wanandroidkotlin.constant.Constants
 import com.example.zhangtianzhu.wanandroidkotlin.constant.TodoBean
@@ -24,9 +25,9 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.jetbrains.anko.support.v4.startActivity
 
-class TodoFragment : BaseFragment(), TodoListContract.View {
+class TodoFragment : BaseMvpFragment<TodoListContract.View,TodoListContract.Presenter>(), TodoListContract.View {
 
-    private val mPresenter: TodoListPresenter by lazy { TodoListPresenter() }
+    override fun createPresenter(): TodoListContract.Presenter = TodoListPresenter()
 
     private val mTodoBean = mutableListOf<TodoBean>()
 
@@ -69,7 +70,7 @@ class TodoFragment : BaseFragment(), TodoListContract.View {
             onItemChildClickListener = this@TodoFragment.onItemChildClickListener
         }
         changeData()
-        mPresenter.registerEvent()
+        mPresenter?.registerEvent()
         refreshTodoData()
     }
 
@@ -81,14 +82,13 @@ class TodoFragment : BaseFragment(), TodoListContract.View {
 
     private fun changeData() {
         if (isDone) {
-            mPresenter.getDoneTodoList(1, mType)
+            mPresenter?.getDoneTodoList(1, mType)
         } else {
-            mPresenter.getNoTodoList(1, mType)
+            mPresenter?.getNoTodoList(1, mType)
         }
     }
 
     override fun initData() {
-        mPresenter.attachView(this)
         mType = arguments?.getInt(Constants.TODO_TYPE)!!
         mAdapter = TodoListAdapter(_mActivity, mTodoBean, mType)
         EventBus.getDefault().register(this)
@@ -205,7 +205,7 @@ class TodoFragment : BaseFragment(), TodoListContract.View {
                         DialogUtil.showSnackBar(_mActivity, getString(R.string.http_error))
                         return@OnItemChildClickListener
                     } else {
-                        mPresenter.deleteTodoList(data.id)
+                        mPresenter?.deleteTodoList(data.id)
                         mAdapter.notifyItemRemoved(position)
                     }
                 }
@@ -215,9 +215,9 @@ class TodoFragment : BaseFragment(), TodoListContract.View {
                         return@OnItemChildClickListener
                     } else {
                         if (isDone) {
-                            mPresenter.updateTodoList(data.id, 0)
+                            mPresenter?.updateTodoList(data.id, 0)
                         } else {
-                            mPresenter.updateTodoList(data.id, 1)
+                            mPresenter?.updateTodoList(data.id, 1)
                         }
                         mAdapter.notifyItemRemoved(position)
                     }
@@ -245,11 +245,11 @@ class TodoFragment : BaseFragment(), TodoListContract.View {
     private fun refreshTodoData() {
         todo_refresh.run {
             setOnRefreshListener {
-                mPresenter.refreshData(mType, isDone)
+                mPresenter?.refreshData(mType, isDone)
                 finishRefresh(1000)
             }
             setOnLoadMoreListener {
-                mPresenter.loadMore(mType, isDone)
+                mPresenter?.loadMore(mType, isDone)
                 finishLoadMore(1000)
             }
         }

@@ -9,6 +9,7 @@ import android.text.Html
 import android.text.method.LinkMovementMethod
 import android.view.View
 import com.example.zhangtianzhu.wanandroidkotlin.R
+import com.example.zhangtianzhu.wanandroidkotlin.base.BaseMvpSwipeBackActivity
 import com.example.zhangtianzhu.wanandroidkotlin.base.BaseSwipeBackActivity
 import com.example.zhangtianzhu.wanandroidkotlin.contract.home.AboutUsContract
 import com.example.zhangtianzhu.wanandroidkotlin.presenter.home.AboutUsPresenter
@@ -20,18 +21,16 @@ import com.scwang.smartrefresh.layout.util.DensityUtil
 import kotlinx.android.synthetic.main.activity_about_us.*
 import kotlinx.android.synthetic.main.content_about.*
 
-class AboutUsActivity : BaseSwipeBackActivity() ,AboutUsContract.View{
+class AboutUsActivity : BaseMvpSwipeBackActivity<AboutUsContract.View,AboutUsContract.Presenter>() ,AboutUsContract.View{
 
+    override fun createPresenter(): AboutUsContract.Presenter = AboutUsPresenter()
     private var mThemeListener: View.OnClickListener? = null
-
-    private val mPresenter:AboutUsPresenter by lazy { AboutUsPresenter() }
 
     override fun getLayoutId(): Int {
         return R.layout.activity_about_us
     }
 
     override fun initData() {
-        mPresenter.attachView(this)
         setSupportActionBar(about_us_toolbar)
         StatusBarUtil.immersive(this)
         StatusBarUtil.setPaddingSmart(this, about_us_toolbar)
@@ -81,7 +80,7 @@ class AboutUsActivity : BaseSwipeBackActivity() ,AboutUsContract.View{
             }
         })
 
-        mPresenter.registerEvent()
+        mPresenter?.registerEvent()
     }
 
     override fun onViewCreated(savedInstanceState: Bundle?) {

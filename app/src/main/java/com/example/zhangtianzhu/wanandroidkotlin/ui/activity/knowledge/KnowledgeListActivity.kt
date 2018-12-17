@@ -11,6 +11,7 @@ import android.view.MenuItem
 import android.view.View
 import com.example.zhangtianzhu.wanandroidkotlin.R
 import com.example.zhangtianzhu.wanandroidkotlin.adapter.knowledge.KnowledgePageAdapter
+import com.example.zhangtianzhu.wanandroidkotlin.base.BaseMvpSwipeBackActivity
 import com.example.zhangtianzhu.wanandroidkotlin.base.BaseSwipeBackActivity
 import com.example.zhangtianzhu.wanandroidkotlin.constant.Constants
 import com.example.zhangtianzhu.wanandroidkotlin.constant.KnowledgeData
@@ -24,13 +25,13 @@ import com.example.zhangtianzhu.wanandroidkotlin.utils.StatusBarUtil
 import kotlinx.android.synthetic.main.activity_knowledge_list.*
 
 
-class KnowledgeListActivity : BaseSwipeBackActivity() ,KnowledgeListContract.View{
+class KnowledgeListActivity : BaseMvpSwipeBackActivity<KnowledgeListContract.View,KnowledgeListContract.Presenter>() ,KnowledgeListContract.View{
+
+    override fun createPresenter(): KnowledgeListContract.Presenter = KnowledgeListPresenter()
 
     private var knowledgeDetailData = mutableListOf<KnowledgeData>()
 
     private var toolbarTitle: String? = ""
-
-    private val mPresenter : KnowledgeListPresenter by lazy { KnowledgeListPresenter() }
 
     private val mViewPageAdapter: KnowledgePageAdapter by lazy { KnowledgePageAdapter(knowledgeDetailData, supportFragmentManager) }
 
@@ -39,7 +40,6 @@ class KnowledgeListActivity : BaseSwipeBackActivity() ,KnowledgeListContract.Vie
     }
 
     override fun initData() {
-        mPresenter.attachView(this)
         intent?.extras.let {
             toolbarTitle = it?.getString(Constants.CONTENT_TITLE_KEY)
             it?.getSerializable(Constants.CONTENT_DATA_KEY)?.let {
@@ -73,7 +73,7 @@ class KnowledgeListActivity : BaseSwipeBackActivity() ,KnowledgeListContract.Vie
         }
 
         fab_knowledge.setOnClickListener(fabOnItemClickListener)
-        mPresenter.registerEvent()
+        mPresenter?.registerEvent()
     }
 
     private val fabOnItemClickListener = View.OnClickListener {

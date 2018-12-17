@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import com.example.zhangtianzhu.wanandroidkotlin.R
 import com.example.zhangtianzhu.wanandroidkotlin.base.BaseActivity
+import com.example.zhangtianzhu.wanandroidkotlin.base.BaseMvpActivity
 import com.example.zhangtianzhu.wanandroidkotlin.bean.login.LoginEvent
 import com.example.zhangtianzhu.wanandroidkotlin.constant.Constants
 import com.example.zhangtianzhu.wanandroidkotlin.constant.LoginData
@@ -16,9 +17,9 @@ import com.example.zhangtianzhu.wanandroidkotlin.utils.RxBus
 import kotlinx.android.synthetic.main.activity_register.*
 import org.jetbrains.anko.startActivity
 
-class RegisterActivity : BaseActivity(),RegisterContract.View {
-    private val mPresenter : RegisterPresenter by lazy { RegisterPresenter() }
+class RegisterActivity : BaseMvpActivity<RegisterContract.View,RegisterContract.Presenter>(),RegisterContract.View {
 
+    override fun createPresenter(): RegisterContract.Presenter = RegisterPresenter()
     private var user :String by Preference(Constants.USERNAME,"")
 
     private val mDialog by lazy { DialogUtil.getWaitDialog(this,getString(R.string.register_ing)) }
@@ -28,7 +29,6 @@ class RegisterActivity : BaseActivity(),RegisterContract.View {
     }
 
     override fun initData() {
-        mPresenter.attachView(this)
     }
 
     override fun getData() {
@@ -80,7 +80,7 @@ class RegisterActivity : BaseActivity(),RegisterContract.View {
 
     private fun register(){
         if(validate()){
-            mPresenter.registerWanAndroid(register_account_edit.text.toString(),
+            mPresenter?.registerWanAndroid(register_account_edit.text.toString(),
                                             register_password_edit.text.toString(),
                                             register_repassword_edit.text.toString())
         }

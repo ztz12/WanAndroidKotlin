@@ -105,7 +105,6 @@ class HomePresenter :CommonPresenter<HomeContract.View>(),HomeContract.Presenter
     override fun autoRefresh() {
         isRefresh = true
         mCurrentPage = 0
-        getArticleData(mCurrentPage)
         getHomeData()
     }
 

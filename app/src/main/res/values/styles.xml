@@ -26,6 +26,10 @@
 
     <style name="GuideTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowFullscreen">true</item>
+        <!--设置启动页背景-->
+        <item name="android:windowBackground">@mipmap/bg_cloud_night</item>
+        <!--半透明-->
+        <!--<item name="android:windowIsTranslucent">true</item>-->
     </style>
 
     <style name="AppTheme.FullScreen" parent="Theme.AppCompat.Light.NoActionBar">

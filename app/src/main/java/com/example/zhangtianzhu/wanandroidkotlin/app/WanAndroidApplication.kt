@@ -20,6 +20,10 @@ import org.litepal.LitePalApplication
 import kotlin.properties.Delegates
 import com.tencent.bugly.crashreport.CrashReport
 import com.tencent.bugly.crashreport.CrashReport.UserStrategy
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
+import android.os.Process.THREAD_PRIORITY_BACKGROUND
+
 
 
 
@@ -38,13 +42,22 @@ class WanAndroidApplication :LitePalApplication(){
     override fun onCreate() {
         super.onCreate()
         context = applicationContext
-        refWatcher = setupLeakCanary()
         DisplayManager.init(this)
         registerActivityLifecycleCallbacks(mActivityLifecycleCallbacks)
-        initLitePal()
-        initLogger()
-        initBugly()
         setNightModel()
+        initThirdService()
+    }
+
+    private fun initThirdService(){
+        Thread(Runnable {
+            //子线程初始化第三方组件
+            Thread.sleep(1000)//延迟初始化
+            refWatcher = setupLeakCanary()
+            initLitePal()
+            initLogger()
+            initBugly()
+        }).start()
+
     }
 
     /**

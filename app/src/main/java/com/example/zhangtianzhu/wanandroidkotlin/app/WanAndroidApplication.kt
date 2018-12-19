@@ -20,11 +20,6 @@ import org.litepal.LitePalApplication
 import kotlin.properties.Delegates
 import com.tencent.bugly.crashreport.CrashReport
 import com.tencent.bugly.crashreport.CrashReport.UserStrategy
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
-import android.os.Process.THREAD_PRIORITY_BACKGROUND
-
-
 
 
 class WanAndroidApplication :LitePalApplication(){

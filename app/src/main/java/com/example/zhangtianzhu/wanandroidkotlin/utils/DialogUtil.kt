@@ -36,6 +36,7 @@ object DialogUtil {
      */
     fun getWaitDialog(context: Context, message: String): ProgressDialog {
         val waitDialog = ProgressDialog(context)
+        waitDialog.setCancelable(false)
         if (!TextUtils.isEmpty(message)) {
             waitDialog.setMessage(message)
         }

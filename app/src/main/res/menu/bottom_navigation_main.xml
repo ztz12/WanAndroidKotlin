@@ -5,7 +5,7 @@
     <item
         android:id="@+id/tab_home_pager"
         android:enabled="true"
-        android:icon="@drawable/icon_home_pager_not_selected"
+        android:icon="@drawable/home"
         android:title="@string/home_pager"
         app:showAsAction="ifRoom" />
 
@@ -19,21 +19,21 @@
     <item
         android:id="@+id/tab_weChat"
         android:enabled="true"
-        android:icon="@drawable/ic_wechat_black_24dp"
+        android:icon="@drawable/wechat"
         android:title="@string/weChat"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/tab_navigation"
         android:enabled="true"
-        android:icon="@drawable/icon_navigation_not_selected"
+        android:icon="@drawable/navigation"
         android:title="@string/navigation"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/tab_project"
         android:enabled="true"
-        android:icon="@drawable/icon_project_not_selected"
+        android:icon="@drawable/project"
         android:title="@string/project"
         app:showAsAction="ifRoom" />
 </menu>

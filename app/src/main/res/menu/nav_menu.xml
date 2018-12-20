@@ -3,7 +3,7 @@
 
     <group android:id="@+id/other">
         <item android:id="@+id/nav_item_home"
-            android:icon="@drawable/ic_wan_android"
+            android:icon="@drawable/androidone"
             android:title="@string/app_name"
             android:checkable="true"
             android:checked="true" />

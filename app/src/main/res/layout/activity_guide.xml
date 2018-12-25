@@ -12,7 +12,7 @@
         android:scaleType="fitXY"
         android:src="@mipmap/bg_cloud_night"/>
 
-    <com.ns.yc.yccountdownviewlib.CountDownView
+    <com.example.zhangtianzhu.wanandroidkotlin.widget.CountDownView
         android:id="@+id/cdv_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -4,15 +4,13 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
-import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.ActivityOptionsCompat
 import android.view.KeyEvent
-import android.view.WindowManager
 import com.example.zhangtianzhu.wanandroidkotlin.R
 import com.example.zhangtianzhu.wanandroidkotlin.base.BaseActivity
 import com.example.zhangtianzhu.wanandroidkotlin.ui.activity.home.MainActivity
 import com.example.zhangtianzhu.wanandroidkotlin.ui.activity.login.LoginActivity
+import com.example.zhangtianzhu.wanandroidkotlin.widget.CountDownView
 import kotlinx.android.synthetic.main.activity_guide.*
 import org.jetbrains.anko.startActivity
 
@@ -57,9 +55,6 @@ class GuideActivity : BaseActivity() {
     }
 
     private fun startMainActivity(){
-        //TODO 取消跳转动画,否则点击倒计时按钮有时会崩溃
-//        val options = ActivityOptionsCompat.makeCustomAnimation(this,R.anim.screen_zoom_in,R.anim.screen_zoom_out)
-//        startActivity(Intent(this@GuideActivity,MainActivity::class.java),options.toBundle())
         if(isFirstIn){
             startActivity<LoginActivity>()
         }else {
@@ -80,7 +75,11 @@ class GuideActivity : BaseActivity() {
         cdv_time.run {
             setTime(3)
             start()
-            setOnLoadingFinishListener { startMainActivity() }
+            setOnLoadingFinishListener(object : CountDownView.OnLoadingFinishListener{
+                override fun finish() {
+                    startMainActivity()
+                }
+            })
         }
     }
 

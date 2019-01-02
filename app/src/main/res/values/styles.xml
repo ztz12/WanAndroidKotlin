@@ -27,7 +27,7 @@
     <style name="GuideTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowFullscreen">true</item>
         <!--设置启动页背景透明-->
-        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowBackground">@mipmap/bg_cloud_night</item>
         <!--半透明-->
         <!--<item name="android:windowIsTranslucent">true</item>-->
     </style>

@@ -114,7 +114,7 @@ abstract class BaseFragment : SupportFragment(){
 
     override fun onDestroy() {
         super.onDestroy()
-        _mActivity.let { WanAndroidApplication.getRefWatcher(it)?.watch(it) }
+//        _mActivity.let { WanAndroidApplication.getRefWatcher(it)?.watch(it) }
     }
 
 }

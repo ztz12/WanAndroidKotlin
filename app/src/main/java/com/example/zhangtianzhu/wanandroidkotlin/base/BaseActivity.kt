@@ -60,6 +60,6 @@ abstract class BaseActivity : SupportActivity() {
     override fun onDestroy() {
         super.onDestroy()
         CommonUtil.fixInputMethodManagerLeak(this)
-        WanAndroidApplication.getRefWatcher(this)?.watch(this)
+//        WanAndroidApplication.getRefWatcher(this)?.watch(this)
     }
 }

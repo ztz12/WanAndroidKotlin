@@ -9,6 +9,8 @@
         <!-- Set menu background and text color -->
         <item name="android:itemBackground">@color/white</item>
         <item name="android:textColor">@color/title_black</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+
 
         //沉浸状态栏 只有不透明的全屏activity可以自主设置界面方向,
         //因此将windowIsTranslucent改为windowDisablePreview

@@ -1,29 +1,34 @@
 package com.example.zhangtianzhu.wanandroidkotlin.base
 
+import android.app.Activity
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import com.example.zhangtianzhu.wanandroidkotlin.constant.Constants
 import me.yokeyword.fragmentation.SupportActivity
 import com.example.zhangtianzhu.wanandroidkotlin.R
-import com.example.zhangtianzhu.wanandroidkotlin.app.WanAndroidApplication
 import com.example.zhangtianzhu.wanandroidkotlin.utils.*
+import java.lang.ref.WeakReference
 
 abstract class BaseActivity : SupportActivity() {
-    protected var isLogin by Preference(Constants.ISLOGIN,false)
+    protected var isLogin by Preference(Constants.ISLOGIN, false)
 
-    protected var isFirstIn by Preference(Constants.ISFIRSTIN,true)
+    protected var isFirstIn by Preference(Constants.ISFIRSTIN, true)
 
     protected val username by Preference(Constants.USERNAME, "")
 
     protected var mThemeColor = ConfigureUtils.getColor()
 
+    private var activityWeakReference: WeakReference<Activity>? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(getLayoutId())
+        activityWeakReference = WeakReference(this)
+        ActivityCollector.add(activityWeakReference)
         init(savedInstanceState)
     }
 
-    private fun init(savedInstanceState: Bundle?){
+    private fun init(savedInstanceState: Bundle?) {
         initView()
         initData()
         getData()
@@ -35,19 +40,19 @@ abstract class BaseActivity : SupportActivity() {
         updateColor()
     }
 
-    open fun updateColor(){
-        mThemeColor = if(!ConfigureUtils.getIsNightMode()){
+    open fun updateColor() {
+        mThemeColor = if (!ConfigureUtils.getIsNightMode()) {
             ConfigureUtils.getColor()
-        }else{
+        } else {
             resources.getColor(R.color.colorPrimary)
         }
-        StatusBarUtil.setColor(this,mThemeColor,0)
-        if(this.supportActionBar!=null){
+        StatusBarUtil.setColor(this, mThemeColor, 0)
+        if (this.supportActionBar != null) {
             this.supportActionBar?.setBackgroundDrawable(ColorDrawable(mThemeColor))
         }
     }
 
-    protected abstract fun getLayoutId() :Int
+    protected abstract fun getLayoutId(): Int
 
     protected abstract fun initData()
 
@@ -60,6 +65,7 @@ abstract class BaseActivity : SupportActivity() {
     override fun onDestroy() {
         super.onDestroy()
         CommonUtil.fixInputMethodManagerLeak(this)
+        ActivityCollector.remove(activityWeakReference)
 //        WanAndroidApplication.getRefWatcher(this)?.watch(this)
     }
 }

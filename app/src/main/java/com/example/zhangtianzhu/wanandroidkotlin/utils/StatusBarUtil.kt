@@ -20,9 +20,6 @@ import java.util.regex.Pattern
 
 /**
  * 状态栏透明
- *
- * @author SCWANG
- * @date 2016/10/26
  */
 
 object StatusBarUtil {

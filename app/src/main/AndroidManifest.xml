@@ -79,7 +79,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.guide.GuideActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/GuideTheme">
             <intent-filter>

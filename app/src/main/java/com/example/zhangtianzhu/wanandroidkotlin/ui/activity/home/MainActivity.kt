@@ -280,7 +280,8 @@ class MainActivity : BaseMvpActivity<MainContract.View,MainContract.Presenter>()
             1 -> common_toolbar_title_tv.text = getString(R.string.knowledge_hierarchy)
             2 -> common_toolbar_title_tv.text = getString(R.string.weChat)
             3 -> common_toolbar_title_tv.text = getString(R.string.navigation)
-            else -> common_toolbar_title_tv.text = getString(R.string.project)
+            4 -> common_toolbar_title_tv.text = getString(R.string.project)
+            else -> common_toolbar_title_tv.text = getString(R.string.collect)
         }
         when {
             position < Constants.TYPE_COLLECT -> {

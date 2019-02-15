@@ -53,6 +53,7 @@ abstract class BaseActivity : SupportActivity() {
     override fun onResume() {
         //动态注册广播变化
         val filter = IntentFilter()
+        //android.net.conn.CONNECTIVITY_CHANGE是系统定义好的action，只要网络状态发生变化，NetWorkReceiver就会收到广播
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE")
         mNetworkChangeReceiver = NetWorkReceiver()
         registerReceiver(mNetworkChangeReceiver,filter)

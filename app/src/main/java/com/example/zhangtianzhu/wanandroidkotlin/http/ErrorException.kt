@@ -10,7 +10,7 @@ import java.net.UnknownHostException
 
 object ErrorException {
         var errorCode = ErrorStatus.UNKNOWN_ERROR
-        var errorMsg = "请求失败，请稍后重试"
+        var errorMsg = "网络未连接~"
 
         fun handleException(e: Throwable): String {
             e.printStackTrace()

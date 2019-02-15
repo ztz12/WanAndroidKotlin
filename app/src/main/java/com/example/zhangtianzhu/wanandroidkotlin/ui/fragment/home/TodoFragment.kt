@@ -91,7 +91,6 @@ class TodoFragment : BaseMvpFragment<TodoListContract.View,TodoListContract.Pres
     override fun initData() {
         mType = arguments?.getInt(Constants.TODO_TYPE)!!
         mAdapter = TodoListAdapter(_mActivity, mTodoBean, mType)
-        EventBus.getDefault().register(this)
     }
 
     override fun lazyLoad() {
@@ -255,8 +254,4 @@ class TodoFragment : BaseMvpFragment<TodoListContract.View,TodoListContract.Pres
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        EventBus.getDefault().unregister(this)
-    }
 }

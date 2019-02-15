@@ -8,9 +8,12 @@ import com.example.zhangtianzhu.wanandroidkotlin.constant.Constants
 import com.example.zhangtianzhu.wanandroidkotlin.utils.DialogUtil
 import me.yokeyword.fragmentation.SupportFragment
 import com.example.zhangtianzhu.wanandroidkotlin.R
-import com.example.zhangtianzhu.wanandroidkotlin.app.WanAndroidApplication
+import com.example.zhangtianzhu.wanandroidkotlin.bean.home.NetWorkChangeEvent
 import com.example.zhangtianzhu.wanandroidkotlin.utils.Preference
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 abstract class BaseFragment : SupportFragment(){
     private var clickTime :Long = 0
@@ -23,6 +26,11 @@ abstract class BaseFragment : SupportFragment(){
     protected val mDialog by lazy { DialogUtil.getWaitDialog(_mActivity,getString(R.string.loading)) }
 
     protected var isLogin by Preference(Constants.ISLOGIN,false)
+
+    open fun doRetryConnectNetWork(){
+        initData()
+        getData()
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -67,6 +75,7 @@ abstract class BaseFragment : SupportFragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        EventBus.getDefault().register(this)
 //        init()
 //        isPrepared = true
 //        lazyIfPrepare()
@@ -82,6 +91,13 @@ abstract class BaseFragment : SupportFragment(){
         if(isPrepared&&userVisibleHint&&!isHasLoad){
             lazyLoad()
             isHasLoad = true
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onNetWorkChange(netWorkChangeEvent: NetWorkChangeEvent){
+        if(netWorkChangeEvent.isConnect){
+            doRetryConnectNetWork()
         }
     }
 
@@ -114,6 +130,7 @@ abstract class BaseFragment : SupportFragment(){
 
     override fun onDestroy() {
         super.onDestroy()
+        EventBus.getDefault().unregister(this)
 //        _mActivity.let { WanAndroidApplication.getRefWatcher(it)?.watch(it) }
     }
 

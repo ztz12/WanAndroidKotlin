@@ -40,6 +40,8 @@ import org.jetbrains.anko.uiThread
 
 class MainActivity : BaseMvpActivity<MainContract.View,MainContract.Presenter>(), MainContract.View {
 
+    private val BOTTOM_INDEX = "bottom_index"
+
     override fun createPresenter(): MainContract.Presenter = MainPresenter()
 
     private var fragmentList: MutableList<BaseFragment>? = null
@@ -80,7 +82,7 @@ class MainActivity : BaseMvpActivity<MainContract.View,MainContract.Presenter>()
         navigation.run {
             tvUser = getHeaderView(0).findViewById(R.id.nav_header_login_tv)
         }
-        switchFragment(Constants.TYPE_HOME)
+        switchFragment(mIndex)
         initBottomNavigation()
         initDrawerLayout()
         initNavigationView()
@@ -273,6 +275,13 @@ class MainActivity : BaseMvpActivity<MainContract.View,MainContract.Presenter>()
     @SuppressLint("RestrictedApi")
     private fun switchFragment(position: Int) {
         mIndex = position
+        when(mIndex){
+            0 -> common_toolbar_title_tv.text = getString(R.string.home_pager)
+            1 -> common_toolbar_title_tv.text = getString(R.string.knowledge_hierarchy)
+            2 -> common_toolbar_title_tv.text = getString(R.string.weChat)
+            3 -> common_toolbar_title_tv.text = getString(R.string.navigation)
+            else -> common_toolbar_title_tv.text = getString(R.string.project)
+        }
         when {
             position < Constants.TYPE_COLLECT -> {
                 fab.visibility = View.VISIBLE
@@ -369,7 +378,15 @@ class MainActivity : BaseMvpActivity<MainContract.View,MainContract.Presenter>()
     }
 
     override fun onViewCreated(savedInstanceState: Bundle?) {
+        if(savedInstanceState!=null){
+            mIndex = savedInstanceState?.getInt(BOTTOM_INDEX)
+        }
+    }
 
+    //保存当前Fragment位置，避免断网后，重新请求数据不对应当前底部导航栏
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+        outState?.putInt(BOTTOM_INDEX,mIndex)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

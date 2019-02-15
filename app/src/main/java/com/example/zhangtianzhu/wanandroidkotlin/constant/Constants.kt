@@ -25,6 +25,7 @@ object Constants {
     const val UNCOLLECTIONS_WEBSITE = "lg/uncollect"
     const val ARTICLE_WEBSITE = "article"
     const val TODO_WEBSITE = "lg/todo"
+    const val HAVE_NETWORK = "have_network"
 
     const val SET_COOKIE_KEY = "set-cookie"
     const val COOKIE_NAME = "Cookie"

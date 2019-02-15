@@ -42,7 +42,7 @@ object ErrorException {
                     Logger.e("TAG", "未知错误Debug调试 ")
                 }
 
-                errorMsg = "未知错误，可能抛锚了吧~"
+                errorMsg = "未知错误：可能缓存被清除，无网络无法获取数据~"
                 errorCode = ErrorStatus.UNKNOWN_ERROR
             }
             return errorMsg

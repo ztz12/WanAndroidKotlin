@@ -111,10 +111,10 @@ class HomeFragment :BaseMvpFragment<HomeContract.View,HomeContract.Presenter>(),
         val imagePic = ArrayList<String>()
         val imageTitle = ArrayList<String>()
         Observable.fromIterable(bannerData)
-                .subscribe({
+                .subscribe {
                     imagePic.add(it.imagePath)
                     imageTitle.add(it.title)
-                })
+                }
         bannerView?.findViewById<BGABanner>(R.id.banner)?.run {
             setAutoPlayAble(imagePic.size>1)
             setData(imagePic,imageTitle)
@@ -162,7 +162,7 @@ class HomeFragment :BaseMvpFragment<HomeContract.View,HomeContract.Presenter>(),
 
     private val delegate = BGABanner.Delegate<ImageView,String>{
         banner, itemView, model, position ->
-        if(bannerData.size>0){
+        if(bannerData.isNotEmpty()){
             val data = bannerData[position]
             Intent(_mActivity,ContentActivity::class.java).run {
                 putExtra(Constants.CONTENT_URL_KEY,data.url)

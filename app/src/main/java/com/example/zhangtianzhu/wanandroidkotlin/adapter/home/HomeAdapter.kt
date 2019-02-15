@@ -29,7 +29,7 @@ class HomeAdapter(private val context: Context, data:MutableList<ArticelDetail>)
         if(item.envelopePic.isNotEmpty()){
             helper.getView<ImageView>(R.id.iv_home_pic)
                     .visibility = View.VISIBLE
-            context?.let {
+            context.let {
                 ImageLoader.load(it,helper.getView(R.id.iv_home_pic),item.envelopePic)
             }
         }else{

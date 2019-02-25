@@ -7,11 +7,6 @@ import android.support.design.widget.BottomNavigationView
 import android.util.Log
 
 
-/**
- * @author chao.qu
- * @date 2017/4/4
- * http://stackoverflow.com/questions/40176244/how-to-disable-bottomnavigationview-shift-mode
- */
 
 object BottomNavigationViewHelper {
 

@@ -44,6 +44,7 @@ class RegisterActivity : BaseMvpActivity<RegisterContract.View,RegisterContract.
     override fun getRegisterData(loginData: LoginData) {
         DialogUtil.showSnackBar(this,"注册成功!")
         isLogin = true
+        isFirstIn = false
         user = loginData.username
         RxBus.default.post(LoginEvent(true))
         startActivity<MainActivity>()

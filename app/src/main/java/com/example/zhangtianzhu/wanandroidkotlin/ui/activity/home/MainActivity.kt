@@ -303,6 +303,9 @@ class MainActivity : BaseMvpActivity<MainContract.View,MainContract.Presenter>()
         transaction.hide(lastFrag)
         mLastIndex = position
         if (!target.isAdded) {
+            //这里必须重新开启一个事务进行移除目标的Fragment并提交，否则直接使用transaction.remove()方法APP会崩溃
+            //FragmentTransaction只能commit一次，再点击事件中使用会多次commit就报错
+            //通过transaction.addBackToStack(null)，让Fragment恢复到之前状态
             supportFragmentManager.beginTransaction().remove(target).commit()
             //这里不能使用transaction.replace方法，否则会出现切换回这个界面内容显示不出来，
             // 与LayoutManager android.support.v7.widget.LinearLayoutManager@229851b is already attached to a

@@ -9,7 +9,7 @@ object Constants {
 
     const val BUGLY_ID = "963067f3a0"
 
-    const val BASE_URl = "http://www.wanandroid.com/"
+    const val BASE_URl = "https://www.wanandroid.com/"
 
     const val USERNAME = "username"
 

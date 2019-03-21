@@ -151,23 +151,23 @@ class MainActivity : BaseMvpActivity<MainContract.View,MainContract.Presenter>()
             BottomNavigationView.OnNavigationItemSelectedListener { item ->
                 return@OnNavigationItemSelectedListener when (item.itemId) {
                     R.id.tab_home_pager -> {
-                        loadPage(getString(R.string.home_pager), 0)
+                        loadPage(getString(R.string.home_pager), Constants.TYPE_HOME)
                         true
                     }
                     R.id.tab_knowledge_hierarchy -> {
-                        loadPage(getString(R.string.knowledge_hierarchy), 1)
+                        loadPage(getString(R.string.knowledge_hierarchy), Constants.TYPE_KNOWLEDGE)
                         true
                     }
                     R.id.tab_weChat ->{
-                        loadPage(getString(R.string.weChat),2)
+                        loadPage(getString(R.string.weChat),Constants.TYPE_WECHAT)
                         true
                     }
                     R.id.tab_navigation -> {
-                        loadPage(getString(R.string.navigation), 3)
+                        loadPage(getString(R.string.navigation), Constants.TYPE_NAVIGATION)
                         true
                     }
                     else -> {
-                        loadPage(getString(R.string.project), 4)
+                        loadPage(getString(R.string.project), Constants.TYPE_PROJECT)
                         true
                     }
                 }
@@ -240,12 +240,12 @@ class MainActivity : BaseMvpActivity<MainContract.View,MainContract.Presenter>()
     private fun intFab() {
         fab.setOnClickListener {
             when (mIndex) {
-                0 -> homeFragment?.scrollTop()
-                1 -> knowledgeFragment?.scrollTop()
-                2 -> weChatFragment?.scrollTop()
-                3 -> navigationFragment?.scrollTop()
-                4 -> projectFragment?.scrollTop()
-                5 -> collectFragment?.scrollTop()
+                Constants.TYPE_HOME -> homeFragment?.scrollTop()
+                Constants.TYPE_KNOWLEDGE -> knowledgeFragment?.scrollTop()
+                Constants.TYPE_WECHAT -> weChatFragment?.scrollTop()
+                Constants.TYPE_NAVIGATION -> navigationFragment?.scrollTop()
+                Constants.TYPE_PROJECT -> projectFragment?.scrollTop()
+                Constants.TYPE_COLLECT -> collectFragment?.scrollTop()
             }
 
         }
@@ -276,11 +276,11 @@ class MainActivity : BaseMvpActivity<MainContract.View,MainContract.Presenter>()
     private fun switchFragment(position: Int) {
         mIndex = position
         when(mIndex){
-            0 -> common_toolbar_title_tv.text = getString(R.string.home_pager)
-            1 -> common_toolbar_title_tv.text = getString(R.string.knowledge_hierarchy)
-            2 -> common_toolbar_title_tv.text = getString(R.string.weChat)
-            3 -> common_toolbar_title_tv.text = getString(R.string.navigation)
-            4 -> common_toolbar_title_tv.text = getString(R.string.project)
+            Constants.TYPE_HOME -> common_toolbar_title_tv.text = getString(R.string.home_pager)
+            Constants.TYPE_KNOWLEDGE -> common_toolbar_title_tv.text = getString(R.string.knowledge_hierarchy)
+            Constants.TYPE_WECHAT -> common_toolbar_title_tv.text = getString(R.string.weChat)
+            Constants.TYPE_NAVIGATION -> common_toolbar_title_tv.text = getString(R.string.navigation)
+            Constants.TYPE_PROJECT -> common_toolbar_title_tv.text = getString(R.string.project)
             else -> common_toolbar_title_tv.text = getString(R.string.collect)
         }
         when {

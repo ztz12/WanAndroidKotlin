@@ -24,7 +24,7 @@ class CollectFragment : BaseMvpFragment<CollectContract.View,CollectContract.Pre
 
     private val mData = mutableListOf<CollectionArticle>()
 
-    private val mAdapter by lazy { CollectAdapter(_mActivity, data = mData) }
+    private val mAdapter by lazy { CollectAdapter(_mActivity, mData) }
 
     private val linearLayoutManager: LinearLayoutManager by lazy { LinearLayoutManager(_mActivity) }
 
@@ -108,6 +108,10 @@ class CollectFragment : BaseMvpFragment<CollectContract.View,CollectContract.Pre
             val data = mData[position]
             when(view.id){
                 R.id.iv_collect ->{
+                    //以下三个方法用来移除当前item
+//                    mData.removeAt(position)
+//                    mAdapter.notifyItemRemoved(position)
+//                    mAdapter.notifyItemRangeChanged(position,mData.size - position)
                     mAdapter.remove(position)
                     mPresenter?.removeCollectArticles(data.id,data.originId)
                 }

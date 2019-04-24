@@ -38,7 +38,7 @@ import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.uiThread
 
-class MainActivity : BaseMvpActivity<MainContract.View,MainContract.Presenter>(), MainContract.View {
+class MainActivity : BaseMvpActivity<MainContract.View, MainContract.Presenter>(), MainContract.View {
 
     private val BOTTOM_INDEX = "bottom_index"
 
@@ -48,7 +48,7 @@ class MainActivity : BaseMvpActivity<MainContract.View,MainContract.Presenter>()
 
     private var homeFragment: HomeFragment? = null
     private var knowledgeFragment: KnowledgeSystemFragment? = null
-    private var weChatFragment: WeChatFragment? =null
+    private var weChatFragment: WeChatFragment? = null
     private var navigationFragment: NavigationFragment? = null
     private var projectFragment: ProjectFragment? = null
     private var collectFragment: CollectFragment? = null
@@ -91,7 +91,7 @@ class MainActivity : BaseMvpActivity<MainContract.View,MainContract.Presenter>()
 
     private fun initFragment() {
         knowledgeFragment = KnowledgeSystemFragment.getInstance("", "")
-        weChatFragment = WeChatFragment.getInstance("","")
+        weChatFragment = WeChatFragment.getInstance("", "")
         navigationFragment = NavigationFragment.getInstance("", "")
         projectFragment = ProjectFragment.getInstance("", "")
         collectFragment = CollectFragment.getInstance("", "")
@@ -158,8 +158,8 @@ class MainActivity : BaseMvpActivity<MainContract.View,MainContract.Presenter>()
                         loadPage(getString(R.string.knowledge_hierarchy), Constants.TYPE_KNOWLEDGE)
                         true
                     }
-                    R.id.tab_weChat ->{
-                        loadPage(getString(R.string.weChat),Constants.TYPE_WECHAT)
+                    R.id.tab_weChat -> {
+                        loadPage(getString(R.string.weChat), Constants.TYPE_WECHAT)
                         true
                     }
                     R.id.tab_navigation -> {
@@ -215,10 +215,10 @@ class MainActivity : BaseMvpActivity<MainContract.View,MainContract.Presenter>()
         }
 
         navigation.menu.findItem(R.id.nav_item_todo).setOnMenuItemClickListener {
-            if(isLogin) {
+            if (isLogin) {
                 startActivity<TodoActivity>()
-            }else{
-                DialogUtil.showSnackBar(this,getString(R.string.login_tint))
+            } else {
+                DialogUtil.showSnackBar(this, getString(R.string.login_tint))
             }
             true
         }
@@ -275,7 +275,7 @@ class MainActivity : BaseMvpActivity<MainContract.View,MainContract.Presenter>()
     @SuppressLint("RestrictedApi")
     private fun switchFragment(position: Int) {
         mIndex = position
-        when(mIndex){
+        when (mIndex) {
             Constants.TYPE_HOME -> common_toolbar_title_tv.text = getString(R.string.home_pager)
             Constants.TYPE_KNOWLEDGE -> common_toolbar_title_tv.text = getString(R.string.knowledge_hierarchy)
             Constants.TYPE_WECHAT -> common_toolbar_title_tv.text = getString(R.string.weChat)
@@ -330,9 +330,9 @@ class MainActivity : BaseMvpActivity<MainContract.View,MainContract.Presenter>()
     }
 
     override fun acceptNightModel(isNightModel: Boolean) {
-        if(isNightModel){
+        if (isNightModel) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        }else{
+        } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
         window.setWindowAnimations(R.style.WindowAnimationFadeInOut)
@@ -382,7 +382,7 @@ class MainActivity : BaseMvpActivity<MainContract.View,MainContract.Presenter>()
     }
 
     override fun onViewCreated(savedInstanceState: Bundle?) {
-        if(savedInstanceState!=null){
+        if (savedInstanceState != null) {
             mIndex = savedInstanceState?.getInt(BOTTOM_INDEX)
         }
     }
@@ -390,7 +390,7 @@ class MainActivity : BaseMvpActivity<MainContract.View,MainContract.Presenter>()
     //保存当前Fragment位置，避免断网后，重新请求数据不对应当前底部导航栏
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
-        outState?.putInt(BOTTOM_INDEX,mIndex)
+        outState?.putInt(BOTTOM_INDEX, mIndex)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -400,7 +400,7 @@ class MainActivity : BaseMvpActivity<MainContract.View,MainContract.Presenter>()
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            R.id.action_usage ->{
+            R.id.action_usage -> {
                 startActivity<UseWebActivity>()
             }
 

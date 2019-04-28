@@ -9,7 +9,7 @@ abstract class BaseMvpFragment<in V : IView, P : IPresenter<V>> : BaseFragment()
 
     protected var mPresenter: P? = null
 
-    private lateinit var lifecycleRegistry: LifecycleRegistry
+    private var lifecycleRegistry: LifecycleRegistry?=null
 
     protected abstract fun createPresenter(): P
 
@@ -24,7 +24,9 @@ abstract class BaseMvpFragment<in V : IView, P : IPresenter<V>> : BaseFragment()
 
     override fun onDestroy() {
         super.onDestroy()
-        lifecycleRegistry.markState(Lifecycle.State.DESTROYED)
+        if(lifecycleRegistry!=null) {
+            lifecycleRegistry?.markState(Lifecycle.State.DESTROYED)
+        }
         this.mPresenter = null
     }
 }

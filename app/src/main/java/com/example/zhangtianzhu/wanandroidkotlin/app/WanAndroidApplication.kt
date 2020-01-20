@@ -20,11 +20,16 @@ import org.litepal.LitePalApplication
 import kotlin.properties.Delegates
 import com.tencent.bugly.crashreport.CrashReport
 import com.tencent.bugly.crashreport.CrashReport.UserStrategy
+import java.util.concurrent.Executors
 
 
-class WanAndroidApplication :LitePalApplication(){
+class WanAndroidApplication : LitePalApplication() {
 
     private var refWatcher: RefWatcher? = null
+
+    private val CPU_COUNT = Runtime.getRuntime().availableProcessors()
+    private val CORE_POOL_SIZE = 2.coerceAtLeast((CPU_COUNT - 1).coerceAtMost(4))
+    private val service = Executors.newFixedThreadPool(CORE_POOL_SIZE)
 
     companion object {
         var context: Context by Delegates.notNull()
@@ -34,6 +39,7 @@ class WanAndroidApplication :LitePalApplication(){
             return app.refWatcher
         }
     }
+
     override fun onCreate() {
         super.onCreate()
         context = applicationContext
@@ -43,29 +49,35 @@ class WanAndroidApplication :LitePalApplication(){
         initThirdService()
     }
 
-    private fun initThirdService(){
-        Thread(Runnable {
-            //子线程初始化第三方组件
-            Thread.sleep(1000)//延迟初始化
+    private fun initThirdService() {
+        service.submit {
             refWatcher = setupLeakCanary()
+        }
+        service.submit {
             initLitePal()
+        }
+        service.submit {
             initLogger()
+        }
+        service.submit {
             initBugly()
-        }).start()
+        }
+
+        service.shutdown()
 
     }
 
     /**
      * 初始化Logger日志打印
      */
-    private fun initLogger(){
+    private fun initLogger() {
         val formatStrategy = PrettyFormatStrategy.newBuilder()
                 .showThreadInfo(false)  // 是否显示线程信息，默认 显示
                 .methodCount(0)         // 方法栈打印的个数，默认是 2
                 .methodOffset(7)        // 设置调用堆栈的函数偏移值，默认是 5
                 .tag("Yif_TAG")   // 设置全局TAG，默认是 PRETTY_LOGGER
                 .build()
-        Logger.addLogAdapter(object :AndroidLogAdapter(formatStrategy){
+        Logger.addLogAdapter(object : AndroidLogAdapter(formatStrategy) {
             override fun isLoggable(priority: Int, tag: String?): Boolean {
                 return BuildConfig.DEBUG
             }
@@ -75,7 +87,7 @@ class WanAndroidApplication :LitePalApplication(){
     /**
      * 配置Bugly
      */
-    private fun initBugly(){
+    private fun initBugly() {
         // 获取当前包名
         val packageName = context.packageName
         // 获取当前进程名
@@ -88,7 +100,7 @@ class WanAndroidApplication :LitePalApplication(){
     }
 
 
-    private fun initLitePal(){
+    private fun initLitePal() {
         LitePal.initialize(this)
     }
 
@@ -98,10 +110,10 @@ class WanAndroidApplication :LitePalApplication(){
         } else LeakCanary.install(this)
     }
 
-    private fun setNightModel(){
-        if(ConfigureUtils.getIsNightMode()){
+    private fun setNightModel() {
+        if (ConfigureUtils.getIsNightMode()) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        }else{
+        } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
     }
@@ -114,7 +126,7 @@ class WanAndroidApplication :LitePalApplication(){
     /**
      * ActivityLifecycleCallbacks 监听Activity 生命周期回调
      */
-    private val mActivityLifecycleCallbacks = object : ActivityLifecycleCallbacks{
+    private val mActivityLifecycleCallbacks = object : ActivityLifecycleCallbacks {
         override fun onActivityPaused(p0: Activity?) {
         }
 
@@ -125,7 +137,7 @@ class WanAndroidApplication :LitePalApplication(){
         }
 
         override fun onActivityDestroyed(p0: Activity?) {
-            Logger.d("onDestroy",p0?.componentName?.className)
+            Logger.d("onDestroy", p0?.componentName?.className)
         }
 
         override fun onActivitySaveInstanceState(p0: Activity?, p1: Bundle?) {
@@ -135,7 +147,7 @@ class WanAndroidApplication :LitePalApplication(){
         }
 
         override fun onActivityCreated(p0: Activity?, p1: Bundle?) {
-            Logger.d("onCreate",p0?.componentName?.className)
+            Logger.d("onCreate", p0?.componentName?.className)
         }
 
     }

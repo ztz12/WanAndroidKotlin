@@ -44,6 +44,9 @@ dependencies {
     // RxJava2
     implementation rootProject.ext.rxJavaLibs
     implementation rootProject.ext.commonLibs
+    implementation ("com.github.bumptech.glide:glide:4.9.0") {
+        exclude group: "com.android.support"
+    }
     annotationProcessor rootProject.ext.annotationProcessorLibs
     debugImplementation rootProject.ext.testDeps["debug-db"]
 
